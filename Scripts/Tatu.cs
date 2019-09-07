@@ -27,7 +27,7 @@ public class Tatu : MonoBehaviour
     void Start()
     {
         Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
-        checkpoint = new Vector3(0, 0, 0);
+        checkpoint = new Vector3(0, 5, 0);
         podeMover = false;
         source = GetComponent<AudioSource>();
     }
