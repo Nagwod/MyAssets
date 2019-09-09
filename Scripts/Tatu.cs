@@ -41,7 +41,7 @@ public class Tatu : MonoBehaviour
 
         if (transform.position.y < -100)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); //Qando cair abaixo de -100, reinicia a cena
+            transform.position = checkpoint;
         }
 
         if (Time.timeScale != 0 && podeMover)

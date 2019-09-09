@@ -12,9 +12,9 @@ public class GiraMoeda : MonoBehaviour
     {
         if (trigger)
         {
-            transform.Rotate(0, 0, 2);
+            transform.Rotate(0, 0, 4.5f);
         }
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(0.05f);
         StartCoroutine(Gira());
     }
 
