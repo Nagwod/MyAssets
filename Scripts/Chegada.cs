@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inicio : MonoBehaviour
+public class Chegada : MonoBehaviour
 {
-    public TrailRenderer trail;
+    public ParticleSystem p1, p2;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Tatu.podeMover = true;
-            trail.emitting = true;
+            p1.Emit(100);
+            p2.Emit(100);
+            Destroy(this);
         }
     }
 

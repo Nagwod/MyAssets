@@ -7,7 +7,7 @@ public class Espinho : MonoBehaviour
     public int pulo;
     public float timer;
     Tatu t;
-    public Rigidbody player;
+    public Rigidbody tatu;
     private AudioSource source;
 
     private void OnCollisionEnter(Collision collision)
@@ -21,18 +21,20 @@ public class Espinho : MonoBehaviour
     IEnumerator Delay()
     {
         source.Play(0);
-        player.AddForce(Vector3.up * pulo, ForceMode.Impulse); //Dá um pulo
+        tatu.AddForce(Vector3.up * pulo, ForceMode.Impulse); //Dá um pulo
         Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
         Tatu.podeMover = false;
         yield return new WaitForSeconds(timer);
-        player.velocity = new Vector3(0, 0, 0); //Para o tatu
-        player.transform.position = t.checkpoint; //Volta pro checkpoint
+        tatu.velocity = new Vector3(0, 0, 0); //Para o tatu
+        tatu.transform.position = t.checkpoint; //Volta pro checkpoint
+        ConfigGeral.mortesEspinho++;
+        ConfigGeral.mortes++;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        t = player.GetComponent<Tatu>();
+        t = tatu.GetComponent<Tatu>();
         source = GetComponent<AudioSource>();
     }
 

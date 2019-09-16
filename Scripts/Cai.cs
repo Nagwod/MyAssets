@@ -8,13 +8,13 @@ public class Cai : MonoBehaviour
     public Rigidbody tatu;
     private AudioSource source;
     public TrailRenderer trail;
-    public bool gira;
+    public bool buraco;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (gira)
+            if (buraco) //Verifica se é buraco ou não
             {
                 StartCoroutine(Gira());
             }
@@ -25,7 +25,7 @@ public class Cai : MonoBehaviour
         }
     }
 
-    IEnumerator Gira()
+    IEnumerator Gira() //Morte em buraco
     {
         trail.emitting = false;
         Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
@@ -45,9 +45,11 @@ public class Cai : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         tatu.velocity = new Vector3(0, 0, 0);
         tatu.transform.position = t.checkpoint;
+        ConfigGeral.mortesBuraco++;
+        ConfigGeral.mortes++;
     }
 
-    IEnumerator Espera()
+    IEnumerator Espera() //Morte por queda
     {
         source.Play(0);
         yield return new WaitForSeconds(1.4f);
@@ -57,6 +59,8 @@ public class Cai : MonoBehaviour
         Tatu.podeMover = false;
         tatu.velocity = new Vector3(0, 0, 0);
         tatu.transform.position = t.checkpoint;
+        ConfigGeral.mortesQueda++;
+        ConfigGeral.mortes++;
     }
 
     // Start is called before the first frame update

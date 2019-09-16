@@ -47,7 +47,7 @@ public class GameControl1 : MonoBehaviour
     {
         BinaryFormatter bf = new BinaryFormatter(); //Variável para converter um arquivo para binário
         FileStream file = File.Create(GetFilePath(gameControl1.save)); //Cria um novo arquivo
-        Save save = new Save(); //Instancia um novo "save"
+        Save1 save = new Save1(); //Instancia um novo "save"
         save.fasesCompletas = fasesCompletas; //Seta o valor de "fasesCompletas" de "save"
         save.moedas = moedas;
         save.tempos = tempos;
@@ -62,7 +62,7 @@ public class GameControl1 : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter(); //Variável para criar um arquivo binário
             FileStream file = File.Open(GetFilePath(gameControl1.save), FileMode.Open); //Abre o arquivo
-            Save save = (Save)bf.Deserialize(file); //Retorna os valores guardados no arquivo para "save"
+            Save1 save = (Save1)bf.Deserialize(file); //Retorna os valores guardados no arquivo para "save"
             file.Close();
             fasesCompletas = save.fasesCompletas; //Retorna o valor de "fasesCompletas" de "save"
             moedas = save.moedas;
@@ -79,7 +79,7 @@ public class GameControl1 : MonoBehaviour
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(GetFilePath(gameControl1.save));
-        Save save = new Save();
+        Save1 save = new Save1();
         fasesCompletas = 0;
         save.fasesCompletas = fasesCompletas;
         save.moedas = moedas;
@@ -116,7 +116,7 @@ public class GameControl1 : MonoBehaviour
         }
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(GetFilePath(value), FileMode.Open);
-        Save save = (Save)bf.Deserialize(file);
+        Save1 save = (Save1)bf.Deserialize(file);
         file.Close();
         return "Save "+value+":\n" +
             "Fase: "+(save.fasesCompletas+1);

@@ -4,24 +4,43 @@ using UnityEngine;
 
 public class Final : MonoBehaviour
 {
-    GameControl gameControl;
-    public int fase;
-    public int moedas;
-    public int tempo;
+    GameControl gameControl; //Variável do tipo gamecontrol, para acessar os métodos de lá 
+    //public int fase;
+    //public int moedas;
+    //public int tempo;
     private AudioSource source;
     public GameObject TelaFinal, TelaPrincipal;
-    public float pontosm, pontost, pontos;
+    //public float pontosm, pontost, pontos;
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == "Player")
         {
-            StartCoroutine(Delay());
+            StartCoroutine(Delay()); //Começa a corrotina quando o jogador colidir com o final da fase
         }
     }
 
-    private void CalculaPontos()
+    private void CalculaResultados()
     {
+        gameControl.Carregar(); //Carrega o save do jogador
+        if (gameControl.GetFasesCompletas()<ConfigGeral.faseAtual) //Verifica se a fase jogada era a última fase liberada
+        {
+            gameControl.SetFasesCompletas(ConfigGeral.faseAtual); //Libera a próxima fase
+        }
+        gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
+            ConfigGeral.faseAtual - 1,
+            ConfigGeral.moedas,
+            (int)System.Math.Floor(ConfigGeral.tempo),
+            ConfigGeral.mortes,
+            ConfigGeral.mortesBuraco,
+            ConfigGeral.mortesEspinho,
+            ConfigGeral.mortesParedes,
+            ConfigGeral.mortesQueda,
+            ConfigGeral.batidasParedes,
+            ConfigGeral.batidasArvores
+            );
+        gameControl.Salvar(); //Salva os dados
+        /*
         pontosm = ConfigGeral.moedas * 1000 / moedas; //Calcula um valor entre 0 e 1000 para cada qauntidade de moedas ente a quantidade minima e maxima
         if (ConfigGeral.tempo < tempo)
         {
@@ -39,25 +58,26 @@ public class Final : MonoBehaviour
             }
         }
         pontos = (pontosm + pontost) / 2; //A pontuação é a média entre os pontos de moedas e tempo
-        //gameControl.SetPontos(fase, (int)pontos, (int)System.Math.Floor(ConfigGeral.tempo), ConfigGeral.moedas);
+        gameControl.SetPontos(fase, (int)pontos, (int)System.Math.Floor(ConfigGeral.tempo), ConfigGeral.moedas);
+        */
     }
 
     IEnumerator Delay()
     {
-        source.Play(0);
-        TelaFinal.SetActive(true);
-        TelaPrincipal.SetActive(false);
-        CalculaPontos();
+        source.Play(0); //Toca o som de parabéns
+        TelaFinal.SetActive(true); //Aparece a tela final
+        TelaPrincipal.SetActive(false); //Sai a tela principal
         //gameControl.SetFasesCompletas(fase);
         //gameControl.Save();
-        Time.timeScale = 0;
+        Time.timeScale = 0; //Pausa o jogo
+        CalculaResultados(); //Manda os resultados para serem salvos
         yield return new WaitForSeconds(0.2f);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        gameControl = GameControl.gameControl;
-        source = GetComponent<AudioSource>();
+        gameControl = GameControl.gameControl; //Seta a variável gameControl
+        source = GetComponent<AudioSource>(); //Seta o áudio
     }
 }

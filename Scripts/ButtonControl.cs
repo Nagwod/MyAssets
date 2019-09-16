@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ButtonControl : MonoBehaviour
 {
+
     public void Pausar()
     {
         Time.timeScale = 0;
@@ -29,10 +30,5 @@ public class ButtonControl : MonoBehaviour
     public void Fechar()
     {
         Application.Quit();
-    }
-
-    private void Awake()
-    {
-        
     }
 }

@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class GiraMoeda : MonoBehaviour
 {
+    GameControl gameControl;
     public GameObject tatu; //Recebe o tatu
     private bool trigger;
     public int deteccao;
 
     IEnumerator Gira()
     {
-        if (trigger)
+        if (trigger && QualitySettings.GetQualityLevel()>1)
         {
-            transform.Rotate(0, 0, 4.5f);
+            transform.Rotate(0, 0, 2);
+            yield return new WaitForFixedUpdate();
         }
-        yield return new WaitForSeconds(0.05f);
+        else
+        {
+            yield return new WaitForSeconds(0.05f);
+        }
         StartCoroutine(Gira());
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        gameControl = GameControl.gameControl;
         StartCoroutine(Gira());
     }
 

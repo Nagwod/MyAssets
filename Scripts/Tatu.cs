@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Tatu : MonoBehaviour
 {
-    public Rigidbody tatu;
+    public Rigidbody rigid;
     public Camera cam;
     public Camera mapa;
     public GameObject marcador;
+    public TrailRenderer trail;
     public float velocidadex, velocidadez;
     public Vector3 velocidade;
     public int altcam, altMinimapa, altMarcador;
@@ -17,6 +18,23 @@ public class Tatu : MonoBehaviour
     private readonly int andar = 20, correr = 25;
     private readonly float max = 0.6f;
     public Vector3 checkpoint;
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Parede"))
+        {
+            ConfigGeral.batidasParedes++;
+        }
+        if (collision.transform.CompareTag("Arvore"))
+        {
+            ConfigGeral.batidasArvores++;
+        }
+        if (collision.transform.CompareTag("Chao"))
+        {
+                podeMover = true;
+                trail.emitting = true;
+        }
+    }
 
     public void SomMoeda() //Método chamado na classe Moeda
     {
@@ -88,24 +106,24 @@ public class Tatu : MonoBehaviour
                 //tatu.velocity = new Vector3(velocidadex, tatu.velocity.y, velocidadez);
             }
 
-            if (Input.GetKey("up") && tatu.velocity.z > -5)
+            if (Input.GetKey("up") && rigid.velocity.z > -5)
             {
-                tatu.velocity = new Vector3(tatu.velocity.x, tatu.velocity.y, tatu.velocity.z - 0.4f);
+                rigid.velocity = new Vector3(rigid.velocity.x, rigid.velocity.y, rigid.velocity.z - 0.4f);
             }
-            if (Input.GetKey("down") && tatu.velocity.z < 5)
+            if (Input.GetKey("down") && rigid.velocity.z < 5)
             {
-                tatu.velocity = new Vector3(tatu.velocity.x, tatu.velocity.y, tatu.velocity.z + 0.4f);
+                rigid.velocity = new Vector3(rigid.velocity.x, rigid.velocity.y, rigid.velocity.z + 0.4f);
             }
-            if (Input.GetKey("right") && tatu.velocity.x > -5)
+            if (Input.GetKey("right") && rigid.velocity.x > -5)
             {
-                tatu.velocity = new Vector3(tatu.velocity.x - 0.4f, tatu.velocity.y, tatu.velocity.z);
+                rigid.velocity = new Vector3(rigid.velocity.x - 0.4f, rigid.velocity.y, rigid.velocity.z);
             }
-            if (Input.GetKey("left") && tatu.velocity.x < 5)
+            if (Input.GetKey("left") && rigid.velocity.x < 5)
             {
-                tatu.velocity = new Vector3(tatu.velocity.x + 0.4f, tatu.velocity.y, tatu.velocity.z);
+                rigid.velocity = new Vector3(rigid.velocity.x + 0.4f, rigid.velocity.y, rigid.velocity.z);
             }
 
-            velocidade = tatu.velocity;
+            velocidade = rigid.velocity;
 
             //float h = Input.GetAxis("Horizontal");
             //float v = Input.GetAxis("Vertical");

@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 [Serializable]
-class Admin
+class Admin //Modelo para Salvar o admin
 {
     public string nome;
     public string senha;
@@ -14,7 +14,7 @@ class Admin
 }
 
 [Serializable]
-class Save
+class Save //Modelo para salvar o jogador
 {
     public string nome;
     public string idade;
@@ -22,27 +22,41 @@ class Save
     public int[] moedas = new int[18];
     public int[] tempos = new int[18];
     public int[] mortes = new int[18];
-    public int[] pontos = new int[18];
+    public int[] mortesBuraco = new int[18];
+    public int[] mortesEspinho = new int[18];
+    public int[] mortesParedes = new int[18];
+    public int[] mortesQueda = new int[18];
+    public int[] batidasParede = new int[18];
+    public int[] batidasArvore = new int[18];
+    //public int[] pontos = new int[18];
 }
 
 public class GameControl : MonoBehaviour
 {
+    public int qualidade, volume;
     public static GameControl gameControl;
-    public string filePath, fileAdm;
+    public string filePath, fileAdm; //Caminhos dos arquivos
     //private List<string> filePath = new List<string>();
     private string nomeAdmin, senhaAdmin;
-    private List<string> saves = new List<string>();
+    private List<string> saves = new List<string>(); //Lista para controlar os saves
     private string nomeJogador;
     private string idadeJogador;
-    private int fasesCompletas;
+    public int fasesCompletas;
     private int[] moedas = new int[18];
-    private int[] tempos = new int[18];
+    private int[] tempo = new int[18];
     private int[] mortes = new int[18];
-    private int[] pontos = new int[18];
+    public int[] mortesEspinho = new int[18];
+    public int[] mortesParede = new int[18];
+    public int[] mortesBuraco = new int[18];
+    public int[] mortesQueda = new int[18];
+    public int[] batidasParede = new int[18];
+    public int[] batidasArvore = new int[18];
+    //public int[] pontos = new int[18];
+    
 
     //Jogadores
 
-    public bool ChecaSave()
+    public bool ChecaSave() //Verifica se já existe um jogador com o mesmo nome
     {
         if (!File.Exists(filePath + nomeJogador + ".dat"))
         {
@@ -54,10 +68,11 @@ public class GameControl : MonoBehaviour
         }
     }
     
-    public void CriarSave()
+    public void CriarSave() //Cria o arquivo de save do jogador
     {
         if (!File.Exists(filePath + nomeJogador + ".dat"))
         {
+            Limpar();
             BinaryFormatter bf = new BinaryFormatter(); //Variável para converter um arquivo para binário
             FileStream file = File.Create(filePath + nomeJogador + ".dat"); //Cria um novo arquivo
             Save save = new Save  //Instancia um novo "save"
@@ -66,15 +81,20 @@ public class GameControl : MonoBehaviour
                 idade = idadeJogador,
                 fasesCompletas = fasesCompletas,
                 moedas = moedas,
-                tempos = tempos,
+                tempos = tempo,
                 mortes = mortes,
-                pontos = pontos
+                mortesBuraco = mortesBuraco,
+                mortesEspinho = mortesEspinho,
+                mortesParedes = mortesParede,
+                mortesQueda = mortesQueda,
+                batidasParede = batidasParede,
+                batidasArvore = batidasArvore
             };
             bf.Serialize(file, save); //Guarda os valores de "save" no arquivo
-            file.Close();
-            CarregarAdmin();
-            saves.Add(filePath + nomeJogador + ".dat");
-            AlterarSaves();
+            file.Close(); //Fecha o arquivo
+            CarregarAdmin(); //Carrega o admin para adicionar o novo jogador
+            saves.Add(nomeJogador); //Adciona o novo jogador na lista
+            AlterarSaves(); //Salva o novo jogador em admin
         }
     }
 
@@ -82,83 +102,103 @@ public class GameControl : MonoBehaviour
     {
         if (File.Exists(filePath + nomeJogador + ".dat"))
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(filePath + nomeJogador + ".dat", FileMode.Open);
-            Save save = new Save
+            BinaryFormatter bf = new BinaryFormatter(); //Variável para converter um arquivo para binário
+            FileStream file = File.Open(filePath + nomeJogador + ".dat", FileMode.Open); //Abre o arquivo
+            Save save = new Save //Instancia "save"
             {
                 nome = nomeJogador,
                 idade = idadeJogador,
                 fasesCompletas = fasesCompletas,
                 moedas = moedas,
-                tempos = tempos,
+                tempos = tempo,
                 mortes = mortes,
-                pontos = pontos
+                mortesBuraco = mortesBuraco,
+                mortesEspinho = mortesEspinho,
+                mortesParedes = mortesParede,
+                mortesQueda = mortesQueda,
+                batidasParede = batidasParede,
+                batidasArvore = batidasArvore
             };
             bf.Serialize(file, save); //Guarda os valores de "save" no arquivo
-            file.Close();
-        }
-        else
-        {
-
+            file.Close(); //Fecha o arquivo
         }
     }
 
-    public void Carregar()
+    public void Carregar() //Carrega os dados do jogador do arquivo do jogador para o jogo
     {
         if (File.Exists(filePath + nomeJogador + ".dat"))
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(filePath + nomeJogador + ".dat", FileMode.Open);
-            Save save = (Save)bf.Deserialize(file);
-            file.Close();
-            nomeJogador = save.nome;
+            BinaryFormatter bf = new BinaryFormatter();  //Variável para converter um arquivo para binário
+            FileStream file = File.Open(filePath + nomeJogador + ".dat", FileMode.Open); //Abre o arquivo
+            Save save = (Save)bf.Deserialize(file); //Instancia um novo "save" e carrega os dados guardados no arquivo para ele
+            file.Close(); //Fecha o arquivo
+            nomeJogador = save.nome; //Passa os dados carregados
             idadeJogador = save.idade;
             fasesCompletas = save.fasesCompletas;
             moedas = save.moedas;
-            tempos = save.tempos;
+            tempo = save.tempos;
             mortes = save.mortes;
-            pontos = save.pontos;
-        }
-        else
-        {
-
+            mortesBuraco = save.mortesBuraco;
+            mortesEspinho = save.mortesEspinho;
+            mortesParede = save.mortesParedes;
+            mortesQueda = save.mortesQueda;
+            batidasParede = save.batidasParede;
+            batidasArvore = save.batidasArvore;
         }
     }
 
-    public void Apagar()
+    public void Limpar() //Limpa os campos da classe
     {
-        File.Delete(filePath + nomeJogador + ".dat");
-        saves.Remove(filePath + nomeJogador + ".dat");
-        AlterarSaves();
+        fasesCompletas = 0;
+        for(int i=0; i<=17; i++)
+        {
+            moedas[i] = 0;
+            tempo[i] = 0;
+            mortes[i] = 0;
+            mortesBuraco[i] = 0;
+            mortesEspinho[i] = 0;
+            mortesParede[i] = 0;
+            mortesQueda[i] = 0;
+            batidasParede[i] = 0;
+            batidasArvore[i] = 0;
+        }
+    }
+
+    public void Apagar() //Apaga um jogador
+    {
+        File.Delete(filePath + nomeJogador + ".dat"); //Deleta o arquivo do jogador
+        CarregarAdmin(); //Carrega o admin para remover o jogador
+        saves.Remove(nomeJogador); //Remove o jogador da lista
+        AlterarSaves(); //Devolve a lista sem o jogador excluido
+        Limpar();
     }
 
     //Admin
-    public bool VerificaAdmin()
+
+    public bool VerificaAdmin() //Verifica se já existe o admin
     {
         if (File.Exists(fileAdm))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(fileAdm, FileMode.Open);
-            Admin adm = (Admin)bf.Deserialize(file);
-            file.Close();
-            string n = adm.nome;
-            string s = adm.senha;
-            if (n == "" || s == "")
+            FileStream file = File.Open(fileAdm, FileMode.Open); //Abre o arquivo admin
+            Admin adm = (Admin)bf.Deserialize(file); //Carrega os dados do aquivo
+            file.Close(); //Fecha o arquivo
+            if (adm.nome == "" || adm.senha == "")
             {
-                return false;
+                return false; //Se um dos campos for vazio, retorna false
             }
             else
             {
-                return true;
+                return true; //Se extiver tudo certo, retorna true
             }
         }
         else
         {
-            return false;
+            return false; //Se não existe, ele retorna false
         }
     }
 
-    public void CriarAdmin()
+    public void CriarAdmin() //Cria o arquivo do admin
     {
         if (!File.Exists(fileAdm))
         {
@@ -171,127 +211,150 @@ public class GameControl : MonoBehaviour
                 saves = saves
             };
             bf.Serialize(file, adm); //Guarda os valores de "adm" no arquivo
-            file.Close();
+            file.Close(); //Fecha o arquivo
         }
         else
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(fileAdm, FileMode.Open);
-            Admin adm = (Admin)bf.Deserialize(file);
-            file.Close();
-            string n = adm.nome;
-            string s = adm.senha;
-            if (n == "" || s == "")
+            FileStream file = File.Open(fileAdm, FileMode.Open); //Se já existe admin, ele abre o arquivo
+            Admin adm = (Admin)bf.Deserialize(file); //Carrega os dados
+            file.Close(); //Fecha o arquivo
+            if (adm.nome == "" || adm.senha == "")
             {
-                File.Delete(fileAdm);
-                CriarAdmin();
+                File.Delete(fileAdm); //Se for vazio os campos, ele deleta o admin
+                CriarAdmin(); //Cria um novo admin
             }
             else
             {
-                //Não pode
+                Application.Quit(); //Se já existir um admin, ele fecha o jogo para que quando for aberto de novo, não vá para a tela de criar admin
             }
         }
     }
 
-    public void AlterarAdmin()
+    public void AlterarAdmin() //Alterar os dados do admin
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(fileAdm, FileMode.Open); //Abre o arquivo
-        Admin adm = new Admin
+        Admin adm = new Admin //Instancia admin
         {
             nome = nomeAdmin,
             senha = senhaAdmin,
             saves = saves
         };
-        bf.Serialize(file, adm);
-        file.Close();
+        bf.Serialize(file, adm); //Salva os novos dados
+        file.Close(); //Fecha o arquivo
     }
 
-    public void AlterarSaves()
+    public void AlterarSaves() //Alterar a lista de controle de saves
     {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(fileAdm, FileMode.Open);
-        Admin adm = new Admin
+        FileStream file = File.Open(fileAdm, FileMode.Open); //Abre o arquivo do admin
+        Admin adm = new Admin //Instancia admin
         {
             nome = nomeAdmin,
             senha = senhaAdmin,
             saves = saves
         };
-        bf.Serialize(file, adm);
-        file.Close();
+        bf.Serialize(file, adm); //Carrega os dados do aquivo para admin
+        file.Close(); //Fecha o arquivo
     }
 
-    public void CarregarAdmin()
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(fileAdm, FileMode.Open);
-        Admin adm = (Admin)bf.Deserialize(file);
-        file.Close();
-        nomeAdmin = adm.nome;
-        senhaAdmin = adm.senha;
-        saves = adm.saves;
-    }
-
-    public bool Autenticar()
+    public void CarregarAdmin() //Carrega os dados do admin do arquivo para o jogo
     {
         if (File.Exists(fileAdm))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(fileAdm, FileMode.Open);
-            Admin adm = (Admin)bf.Deserialize(file);
-            file.Close();
+            FileStream file = File.Open(fileAdm, FileMode.Open); //Abre o arquivo do admin
+            Admin adm = (Admin)bf.Deserialize(file); //Instancia admin e carrega os dados do arquivo para ele
+            file.Close(); //Fecha o arquivo
+            nomeAdmin = adm.nome; //Passa os dados para a classe
+            senhaAdmin = adm.senha;
+            saves = adm.saves;
+        }
+    }
+
+    public bool Autenticar() //Faz a verificação para logar o admin
+    {
+        if (File.Exists(fileAdm))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(fileAdm, FileMode.Open); //Abre o arquivo
+            Admin adm = (Admin)bf.Deserialize(file); //Instancia admin e carrega os dados do arquivo para ele
+            file.Close(); //Fecha o arquivo
             if (nomeAdmin.Equals(adm.nome) && senhaAdmin.Equals(adm.senha))
             {
-                return true;
+                return true; //Se os dados corresponderem, permite o login
             }
             else
             {
-                return false;
+                return false; //Se não, não permite logar
             }
         }
         else
         {
+            Application.Quit(); //Se não existir admin para logar, fecha o jogo para que quando for aberto de novo, possa ser criado o admin
             return false;
         }
     }
 
     //Get's e Set's
-    public string GetSaves(string nome)
+    public List<string> GetSaves()
     {
-        return filePath + nome + ".dat";
+        return saves; //Retorna a lista de saves
     }
 
+    //Seta os resultados da fase para serem salvos
+    public void SetResultados(int fase, int moedas, int tempo, int mortes, int mortesBuraco, int mortesEspinho, int mortesParede, int mortesQueda, int batidasParede, int batidasArvore)
+    {
+        this.moedas[fase] = moedas;
+        this.tempo[fase] = tempo;
+        this.mortes[fase] = mortes;
+        this.mortesBuraco[fase] = mortesBuraco;
+        this.mortesEspinho[fase] = mortesEspinho;
+        this.mortesParede[fase] = mortesParede;
+        this.mortesQueda[fase] = mortesQueda;
+        this.batidasParede[fase] = batidasParede;
+        this.batidasArvore[fase] = batidasArvore;
+    }
     public int GetMoedas(int index)
     {
         return moedas[index];
     }
-    public void SetMoedas(int index, int valor)
-    {
-        moedas[index] = valor;
-    }
     public int GetTempos(int index)
     {
-        return tempos[index];
-    }
-    public void SetTempos(int index, int valor)
-    {
-        tempos[index] = valor;
+        return tempo[index];
     }
     public int GetMortes(int index)
     {
         return mortes[index];
     }
-    public void SetMortes(int index, int valor)
+    //public int GetPontos(int index)
+    //{
+    //    return pontos[index];
+    //}
+    public int GetMortesBuraco(int index)
     {
-        mortes[index] = valor;
+        return mortesBuraco[index];
     }
-    public int GetPontos(int index)
+    public int GetMortesEspinho(int index)
     {
-        return pontos[index];
+        return mortesEspinho[index];
     }
-    public void SetPontos(int index, int valor)
+    public int GetMortesParede(int index)
     {
-        pontos[index] = valor;
+        return mortesParede[index];
+    }
+    public int GetMortesQueda(int index)
+    {
+        return mortesQueda[index];
+    }
+    public int GetBatidasParede(int index)
+    {
+        return batidasParede[index];
+    }
+    public int GetBatidasArvore(int index)
+    {
+        return batidasArvore[index];
     }
 
     public int GetFasesCompletas()
@@ -339,11 +402,12 @@ public class GameControl : MonoBehaviour
 
     private void Awake()
     {
-        filePath = Application.persistentDataPath + "/Save";
-        fileAdm = Application.persistentDataPath + "/Admin.dat";
+        qualidade = 3; //Por enquanto o nível de qualidade padrão é 3
+        filePath = Application.persistentDataPath + "/Save"; //Caminho do save do jogador
+        fileAdm = Application.persistentDataPath + "/Admin.dat"; //Caminho do save do Admin
         Screen.sleepTimeout = SleepTimeout.NeverSleep; //Nunca apagar a tela
 
-        if (gameControl == null) //Se tiver mais de um, destrói o outro
+        if (gameControl == null) //Garante que só exista 1 game control
         {
             gameControl = this;
         }
@@ -351,6 +415,7 @@ public class GameControl : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         DontDestroyOnLoad(gameObject); //Não destruir quando carregar outra cena
     }
 }

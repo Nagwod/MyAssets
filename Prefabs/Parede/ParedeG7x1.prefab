@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5916336197867024263}
   m_Layer: 0
   m_Name: ParedeG7x1
-  m_TagString: Untagged
+  m_TagString: Parede
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

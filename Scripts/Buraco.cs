@@ -6,7 +6,7 @@ public class Buraco : MonoBehaviour
 {
     public Vector3 checkpoint;
     public float timer;
-    public Rigidbody player;
+    public Rigidbody tatu;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,8 +19,9 @@ public class Buraco : MonoBehaviour
     IEnumerator Delay()
     {
         yield return new WaitForSeconds(timer);
-        player.velocity = new Vector3(0, 0, 0);
-        player.transform.position = checkpoint;
+        tatu.velocity = new Vector3(0, 0, 0);
+        tatu.transform.position = checkpoint;
+
     }
 
     // Start is called before the first frame update

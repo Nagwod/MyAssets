@@ -38,6 +38,8 @@ public class Esmaga : MonoBehaviour
             yield return new WaitForSeconds(0.4f);
             player.velocity = new Vector3(0, 0, 0); //Para o tatu
             player.transform.position = t.checkpoint; //Manda o tatu pro checkpoint
+            ConfigGeral.mortesParedes++;
+            ConfigGeral.mortes++;
         }
     }
 
