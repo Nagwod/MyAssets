@@ -8,30 +8,30 @@ public class PlacaDepressao : MonoBehaviour
     private Vector3 posinic;
     public bool reverse;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.transform.tag == "Player")
+        if (other.transform.tag == "Player")
         {
             if (reverse) //Se começa aberto
             {
                 if (portao.transform.position == posinic)
                 {
-                    portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y - 1, portao.transform.position.z); //Desce o portão
+                    portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y - 2, portao.transform.position.z); //Desce o portão
                 }
                 else
                 {
-                    portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 1, portao.transform.position.z); //Sobe o portão
+                    portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 2, portao.transform.position.z); //Sobe o portão
                 }
             }
             else
             {
                 if (portao.transform.position == posinic)
                 {
-                    portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 1, portao.transform.position.z); //Sobe o portão
+                    portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 2, portao.transform.position.z); //Sobe o portão
                 }
                 else
                 {
-                    portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y - 1, portao.transform.position.z); //Desce o portão
+                    portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y - 2, portao.transform.position.z); //Desce o portão
                 }
             }
         }

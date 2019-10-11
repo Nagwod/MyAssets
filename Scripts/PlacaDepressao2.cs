@@ -7,9 +7,9 @@ public class PlacaDepressao2 : MonoBehaviour
     public GameObject ponte;
     public bool fechado;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.transform.tag == "Player")
+        if (other.transform.tag == "Player")
         {
             if (fechado)
             {

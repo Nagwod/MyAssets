@@ -13,7 +13,7 @@ public class Chave : MonoBehaviour
         if (other.transform.tag == "Player")
         {
             t.SomMoeda();
-            portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 1, portao.transform.position.z); //Sobe o portão
+            Destroy(portao); //Deleta o portão
             Destroy(gameObject); //Deleta a chave
         }
     }
