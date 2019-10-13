@@ -23,7 +23,7 @@ public class Final : MonoBehaviour
     private void CalculaResultados()
     {
         gameControl.Carregar(); //Carrega o save do jogador
-        if (gameControl.GetFasesCompletas()<ConfigGeral.faseAtual) //Verifica se a fase jogada era a última fase liberada
+        if (gameControl.GetFasesCompletas() < ConfigGeral.faseAtual) //Verifica se a fase jogada era a última fase liberada
         {
             gameControl.SetFasesCompletas(ConfigGeral.faseAtual); //Libera a próxima fase
         }
@@ -40,6 +40,7 @@ public class Final : MonoBehaviour
             ConfigGeral.batidasArvores
             );
         gameControl.Salvar(); //Salva os dados
+        gameControl.SendSaveToDatabase();
         /*
         pontosm = ConfigGeral.moedas * 1000 / moedas; //Calcula um valor entre 0 e 1000 para cada qauntidade de moedas ente a quantidade minima e maxima
         if (ConfigGeral.tempo < tempo)

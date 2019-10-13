@@ -16,6 +16,7 @@ public class ConfigGeral : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         tempo = 0;
         moedas = 0; //É alterada pelo script de Moeda
         mortes = 0;

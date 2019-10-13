@@ -29,8 +29,9 @@ public class Cai : MonoBehaviour
     {
         trail.emitting = false;
         Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
-        Tatu.podeMover = false;
         tatu.velocity = new Vector3(0, -2, 0);
+        tatu.transform.position = new Vector3(transform.position.x, transform.position.y+1, transform.position.z);
+        Tatu.podeMover = false;
         yield return new WaitForSeconds(0.1f);
         source.Play(0);
         tatu.velocity = new Vector3(1, tatu.velocity.y, 1);

@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Proyecto26;
 
 [Serializable]
 class Admin //Modelo para Salvar o admin
@@ -19,20 +20,21 @@ class Save //Modelo para salvar o jogador
     public string nome;
     public string idade;
     public int fasesCompletas;
-    public int[] moedas = new int[18];
-    public int[] tempos = new int[18];
-    public int[] mortes = new int[18];
-    public int[] mortesBuraco = new int[18];
-    public int[] mortesEspinho = new int[18];
-    public int[] mortesParedes = new int[18];
-    public int[] mortesQueda = new int[18];
-    public int[] batidasParede = new int[18];
-    public int[] batidasArvore = new int[18];
-    //public int[] pontos = new int[18];
+    public int[] moedas = new int[4];
+    public int[] tempos = new int[4];
+    public int[] mortes = new int[4];
+    public int[] mortesBuraco = new int[4];
+    public int[] mortesEspinho = new int[4];
+    public int[] mortesParedes = new int[4];
+    public int[] mortesQueda = new int[4];
+    public int[] batidasParede = new int[4];
+    public int[] batidasArvore = new int[4];
+    //public int[] pontos = new int[4];
 }
 
 public class GameControl : MonoBehaviour
 {
+    Save cloudSave = new Save(); // variável de controle para o save
     public int qualidade, volume;
     public static GameControl gameControl;
     public string filePath, fileAdm; //Caminhos dos arquivos
@@ -42,20 +44,19 @@ public class GameControl : MonoBehaviour
     private string nomeJogador;
     private string idadeJogador;
     public int fasesCompletas;
-    private int[] moedas = new int[18];
-    private int[] tempo = new int[18];
-    private int[] mortes = new int[18];
-    public int[] mortesEspinho = new int[18];
-    public int[] mortesParede = new int[18];
-    public int[] mortesBuraco = new int[18];
-    public int[] mortesQueda = new int[18];
-    public int[] batidasParede = new int[18];
-    public int[] batidasArvore = new int[18];
-    //public int[] pontos = new int[18];
-    
+    private int[] moedas = new int[4];
+    private int[] tempo = new int[4];
+    private int[] mortes = new int[4];
+    public int[] mortesEspinho = new int[4];
+    public int[] mortesParede = new int[4];
+    public int[] mortesBuraco = new int[4];
+    public int[] mortesQueda = new int[4];
+    public int[] batidasParede = new int[4];
+    public int[] batidasArvore = new int[4];
+    //public int[] pontos = new int[4];
+
 
     //Jogadores
-
     public bool ChecaSave() //Verifica se já existe um jogador com o mesmo nome
     {
         if (!File.Exists(filePath + nomeJogador + ".dat"))
@@ -67,7 +68,36 @@ public class GameControl : MonoBehaviour
             return false;
         }
     }
-    
+
+    public void SendSaveToDatabase()
+    {
+        Save pSave = new Save
+        {
+            nome = nomeJogador,
+            idade = idadeJogador,
+            fasesCompletas = fasesCompletas,
+            moedas = moedas,
+            tempos = tempo,
+            mortes = mortes,
+            mortesBuraco = mortesBuraco,
+            mortesEspinho = mortesEspinho,
+            mortesParedes = mortesParede,
+            mortesQueda = mortesQueda,
+            batidasParede = batidasParede,
+            batidasArvore = batidasArvore
+        };
+        RestClient.Put("https://tcc-tbpdb.firebaseio.com/" + nomeAdmin + "/" + pSave.nome + ".json", pSave);
+    }
+
+    /*public void RetreiveSaveData(String pNome){
+
+        RestClient.Get<Save>("https://tcc-tbpdb.firebaseio.com/" + nomeAdmin + "/" + pNome + ".json").Then(response =>{
+            cloudSave = response;
+            UpdatePlayerScore();
+        });
+
+    }*/
+
     public void CriarSave() //Cria o arquivo de save do jogador
     {
         if (!File.Exists(filePath + nomeJogador + ".dat"))
@@ -150,7 +180,7 @@ public class GameControl : MonoBehaviour
     public void Limpar() //Limpa os campos da classe
     {
         fasesCompletas = 0;
-        for(int i=0; i<=17; i++)
+        for (int i = 0; i < 4; i++)
         {
             moedas[i] = 0;
             tempo[i] = 0;
@@ -372,7 +402,7 @@ public class GameControl : MonoBehaviour
     }
     public void SetNomeJogador(string nome)
     {
-        nomeJogador  = nome;
+        nomeJogador = nome;
     }
     public string GetIdadeJogaor()
     {
