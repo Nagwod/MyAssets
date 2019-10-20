@@ -6,25 +6,25 @@ public class Sprint : MonoBehaviour
 {
     public Rigidbody player;
     public bool forward, backward, right, left; //Direção do impulso
-    public float forca;
+    public float forca, limite;
 
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (forward)
+            if (forward && player.velocity.z > -limite)
             {
                 player.velocity = new Vector3(player.velocity.x, player.velocity.y, player.velocity.z - forca);
             }
-            if (backward)
+            if (backward && player.velocity.z < limite)
             {
                 player.velocity = new Vector3(player.velocity.x, player.velocity.y, player.velocity.z + forca);
             }
-            if (right)
+            if (right && player.velocity.x > -limite)
             {
                 player.velocity = new Vector3(player.velocity.x - forca, player.velocity.y, player.velocity.z);
             }
-            if (left)
+            if (left && player.velocity.x < limite)
             {
                 player.velocity = new Vector3(player.velocity.x + forca, player.velocity.y, player.velocity.z);
             }

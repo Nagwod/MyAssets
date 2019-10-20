@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CorCenario : MonoBehaviour
+public class Respawn : MonoBehaviour
 {
     public Material[] grama;
     public Material[] borda;
@@ -12,20 +12,23 @@ public class CorCenario : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Tatu.podeMover = false;
-        int index = Random.Range(0, cor.Length);
-        for (int i = 0; i < grama.Length; i++)
+        if(!Tatu.podeMover)
         {
-            grama[i].color = cor[index];
+            int index = Random.Range(0, cor.Length);
+            for (int i = 0; i < grama.Length; i++)
+            {
+                grama[i].color = cor[index];
+            }
+            index = Random.Range(0, cor.Length);
+            for (int i = 0; i < borda.Length; i++)
+            {
+                borda[i].color = cor[index];
+            }
+            index = Random.Range(0, corRastro.Length);
+            trail.startColor = corRastro[index];
+            trail.endColor = corRastro[index];
         }
-        index = Random.Range(0, cor.Length);
-        for (int i = 0; i < borda.Length; i++)
-        {
-            borda[i].color = cor[index];
-        }
-        index = Random.Range(0, corRastro.Length);
-        trail.startColor = corRastro[index];
-        trail.endColor = corRastro[index];
+        
     }
 
     /*

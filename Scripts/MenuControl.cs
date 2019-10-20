@@ -18,7 +18,7 @@ public class MenuControl : MonoBehaviour
     public Slider squalidade; //O slider que altera a qualidade do jogo
     public GameObject prefabBotao; //Botão prefab para os jogadores que forem criados
     public Transform content;//O campo de rolagem que tem os botões dos jogadores criados
-    public Text nomeIdadeDados, nomeIdadeExclusao, faseDados, moedasDados, tempoDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
+    public Text nomeIdadeDados, nomeIdadeExclusao, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
     public List<Button> botoesSaves; //Lista para acessar os botões de jogadores criados na hora de excluir
 
     public void ExibirDados() //Método para exibir os resultados das fases na tela
@@ -40,6 +40,7 @@ public class MenuControl : MonoBehaviour
         faseDados.text = "Fase " + fase + ":";
         moedasDados.text = "Moedas: " + gameControl.GetMoedas(fase - 1);
         tempoDados.text = "Tempo: " + gameControl.GetTempos(fase - 1);
+        velocMedDados.text = "Velocidade média: " + gameControl.GetVelocMedia(fase - 1).ToString("F") + " (Máx 15)";
         mortesDados.text = "Total de mortes: " + gameControl.GetMortes(fase - 1);
         mortesBuracoDados.text = "Buracos: " + gameControl.GetMortesBuraco(fase - 1);
         mortesEspinhoDados.text = "Espinhos: " + gameControl.GetMortesEspinho(fase - 1);
@@ -117,6 +118,7 @@ public class MenuControl : MonoBehaviour
             loginJogador.SetActive(true); //Troca de tela
             ApagaErros(); //Apaga as mensagens de erros das telas
             ApagaTextos(); //Apaga os campos de texto
+            gameControl.logado = true;
         }
         else
         {
@@ -187,6 +189,11 @@ public class MenuControl : MonoBehaviour
         senhaAdmCriar.text = "";
         senhaAdmLogin.text = "";
         idadeJogador.text = "";
+    }
+
+    public void Logout()
+    {
+        gameControl.logado = false;
     }
 
     public void MudaQualidade() //Altera a qualidade do jogo
@@ -287,10 +294,10 @@ public class MenuControl : MonoBehaviour
         gameControl = GameControl.gameControl; //Seta o gameControl
         squalidade.value = gameControl.qualidade; //Puxa o valor de qaulidade
         Screen.orientation = ScreenOrientation.AutoRotation;
-        if (gameControl.VerificaAdmin()) //Verifia se existe admin
+        if (gameControl.logado) //Verifia se existe admin
         {
-            //criarAdm.SetActive(false); //Se já existe, ele fecha a tela de admin
-            //menu.SetActive(true); //e abre o menu
+            loginAdm.SetActive(false); //Se já existe, ele fecha a tela de admin
+            menu.SetActive(true); //e abre o menu
         }
         gameControl.CarregarAdmin(); //Carrega o admin (se existir)
         foreach (string save in gameControl.GetSaves()) //percorre todos os saves

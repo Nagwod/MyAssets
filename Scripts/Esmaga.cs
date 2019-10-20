@@ -13,6 +13,7 @@ public class Esmaga : MonoBehaviour
     private bool fechando;
     public AudioClip[] som; //Vetor de sons
     public AudioSource source;
+    public TrailRenderer trail;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -34,6 +35,7 @@ public class Esmaga : MonoBehaviour
             source.clip = som[index]; //Passa o som pro controle
             source.Play(); //Toca o som
             Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
+            trail.emitting = false;
             Tatu.podeMover = false;
             yield return new WaitForSeconds(0.4f);
             player.velocity = new Vector3(0, 0, 0); //Para o tatu

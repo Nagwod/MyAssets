@@ -57,7 +57,7 @@ public class Tatu : MonoBehaviour
         mapa.transform.position = new Vector3(transform.position[0], altMinimapa, transform.position[2]);
         marcador.transform.position = new Vector3(transform.position[0], altMarcador, transform.position[2]);
 
-        if (transform.position.y < -100)
+        if (transform.position.y < -200)
         {
             transform.position = checkpoint;
         }

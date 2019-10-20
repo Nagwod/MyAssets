@@ -22,6 +22,7 @@ public class Final : MonoBehaviour
 
     private void CalculaResultados()
     {
+        ConfigGeral.gravMedia = ConfigGeral.gravsoma / ConfigGeral.gravcont;
         gameControl.Carregar(); //Carrega o save do jogador
         if (gameControl.GetFasesCompletas() < ConfigGeral.faseAtual) //Verifica se a fase jogada era a última fase liberada
         {
@@ -31,6 +32,7 @@ public class Final : MonoBehaviour
             ConfigGeral.faseAtual - 1,
             ConfigGeral.moedas,
             (int)System.Math.Floor(ConfigGeral.tempo),
+            ConfigGeral.gravMedia,
             ConfigGeral.mortes,
             ConfigGeral.mortesBuraco,
             ConfigGeral.mortesEspinho,

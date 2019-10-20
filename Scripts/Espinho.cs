@@ -9,6 +9,7 @@ public class Espinho : MonoBehaviour
     Tatu t;
     public Rigidbody tatu;
     private AudioSource source;
+    public TrailRenderer trail;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -24,6 +25,7 @@ public class Espinho : MonoBehaviour
         tatu.AddForce(Vector3.up * pulo, ForceMode.Impulse); //Dá um pulo
         Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
         Tatu.podeMover = false;
+        trail.emitting = false;
         yield return new WaitForSeconds(timer);
         tatu.velocity = new Vector3(0, 0, 0); //Para o tatu
         tatu.transform.position = t.checkpoint; //Volta pro checkpoint

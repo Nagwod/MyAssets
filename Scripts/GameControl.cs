@@ -22,6 +22,7 @@ class Save //Modelo para salvar o jogador
     public int fasesCompletas;
     public int[] moedas = new int[4];
     public int[] tempos = new int[4];
+    public float[] velocMedia = new float[4];
     public int[] mortes = new int[4];
     public int[] mortesBuraco = new int[4];
     public int[] mortesEspinho = new int[4];
@@ -36,6 +37,7 @@ public class GameControl : MonoBehaviour
 {
     Save cloudSave = new Save(); // variável de controle para o save
     public int qualidade, volume;
+    public bool logado;
     public static GameControl gameControl;
     public string filePath, fileAdm; //Caminhos dos arquivos
     //private List<string> filePath = new List<string>();
@@ -46,6 +48,7 @@ public class GameControl : MonoBehaviour
     public int fasesCompletas;
     private int[] moedas = new int[4];
     private int[] tempo = new int[4];
+    public float[] velocMedia = new float[4];
     private int[] mortes = new int[4];
     public int[] mortesEspinho = new int[4];
     public int[] mortesParede = new int[4];
@@ -78,6 +81,7 @@ public class GameControl : MonoBehaviour
             fasesCompletas = fasesCompletas,
             moedas = moedas,
             tempos = tempo,
+            velocMedia = velocMedia,
             mortes = mortes,
             mortesBuraco = mortesBuraco,
             mortesEspinho = mortesEspinho,
@@ -112,6 +116,7 @@ public class GameControl : MonoBehaviour
                 fasesCompletas = fasesCompletas,
                 moedas = moedas,
                 tempos = tempo,
+                velocMedia = velocMedia,
                 mortes = mortes,
                 mortesBuraco = mortesBuraco,
                 mortesEspinho = mortesEspinho,
@@ -141,6 +146,7 @@ public class GameControl : MonoBehaviour
                 fasesCompletas = fasesCompletas,
                 moedas = moedas,
                 tempos = tempo,
+                velocMedia = velocMedia,
                 mortes = mortes,
                 mortesBuraco = mortesBuraco,
                 mortesEspinho = mortesEspinho,
@@ -167,6 +173,7 @@ public class GameControl : MonoBehaviour
             fasesCompletas = save.fasesCompletas;
             moedas = save.moedas;
             tempo = save.tempos;
+            velocMedia = velocMedia;
             mortes = save.mortes;
             mortesBuraco = save.mortesBuraco;
             mortesEspinho = save.mortesEspinho;
@@ -184,6 +191,7 @@ public class GameControl : MonoBehaviour
         {
             moedas[i] = 0;
             tempo[i] = 0;
+            velocMedia[i] = 0;
             mortes[i] = 0;
             mortesBuraco[i] = 0;
             mortesEspinho[i] = 0;
@@ -322,7 +330,6 @@ public class GameControl : MonoBehaviour
         }
         else
         {
-            Application.Quit(); //Se não existir admin para logar, fecha o jogo para que quando for aberto de novo, possa ser criado o admin
             return false;
         }
     }
@@ -334,10 +341,11 @@ public class GameControl : MonoBehaviour
     }
 
     //Seta os resultados da fase para serem salvos
-    public void SetResultados(int fase, int moedas, int tempo, int mortes, int mortesBuraco, int mortesEspinho, int mortesParede, int mortesQueda, int batidasParede, int batidasArvore)
+    public void SetResultados(int fase, int moedas, int tempo, float velocMedia, int mortes, int mortesBuraco, int mortesEspinho, int mortesParede, int mortesQueda, int batidasParede, int batidasArvore)
     {
         this.moedas[fase] = moedas;
         this.tempo[fase] = tempo;
+        this.velocMedia[fase] = velocMedia;
         this.mortes[fase] = mortes;
         this.mortesBuraco[fase] = mortesBuraco;
         this.mortesEspinho[fase] = mortesEspinho;
@@ -353,6 +361,10 @@ public class GameControl : MonoBehaviour
     public int GetTempos(int index)
     {
         return tempo[index];
+    }
+    public float GetVelocMedia(int index)
+    {
+        return velocMedia[index];
     }
     public int GetMortes(int index)
     {
