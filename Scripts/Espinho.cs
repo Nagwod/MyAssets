@@ -13,7 +13,7 @@ public class Espinho : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Player")
+        if (collision.transform.CompareTag("Player") && Tatu.podeMover)
         {
             StartCoroutine(Delay());
         }

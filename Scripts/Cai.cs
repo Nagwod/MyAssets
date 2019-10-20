@@ -12,7 +12,7 @@ public class Cai : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && Tatu.podeMover)
         {
             if (buraco) //Verifica se é buraco ou não
             {
@@ -53,7 +53,8 @@ public class Cai : MonoBehaviour
     IEnumerator Espera() //Morte por queda
     {
         source.Play(0);
-        yield return new WaitForSeconds(1.4f);
+        Tatu.podeMover = false;
+        yield return new WaitForSeconds(1);
         trail.emitting = false;
         yield return new WaitForSeconds(0.2f);
         Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
