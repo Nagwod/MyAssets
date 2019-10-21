@@ -173,7 +173,7 @@ public class GameControl : MonoBehaviour
             fasesCompletas = save.fasesCompletas;
             moedas = save.moedas;
             tempo = save.tempos;
-            velocMedia = velocMedia;
+            velocMedia = save.velocMedia;
             mortes = save.mortes;
             mortesBuraco = save.mortesBuraco;
             mortesEspinho = save.mortesEspinho;
