@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlacaDepressao : MonoBehaviour
 {
-    public GameObject portao;
+    public GameObject portao, cadeado;
     private Vector3 posinic;
     public bool reverse;
 
@@ -17,10 +17,12 @@ public class PlacaDepressao : MonoBehaviour
                 if (portao.transform.position == posinic)
                 {
                     portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y - 2, portao.transform.position.z); //Desce o portão
+                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y - 20, cadeado.transform.position.z);
                 }
                 else
                 {
                     portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 2, portao.transform.position.z); //Sobe o portão
+                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y + 20, cadeado.transform.position.z);
                 }
             }
             else
@@ -28,10 +30,12 @@ public class PlacaDepressao : MonoBehaviour
                 if (portao.transform.position == posinic)
                 {
                     portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 2, portao.transform.position.z); //Sobe o portão
+                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y + 20, cadeado.transform.position.z);
                 }
                 else
                 {
                     portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y - 2, portao.transform.position.z); //Desce o portão
+                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y - 20, cadeado.transform.position.z);
                 }
             }
         }

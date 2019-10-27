@@ -7,12 +7,15 @@ public class Chave : MonoBehaviour
     Tatu t; //Variável do tipo tatu
     public GameObject tatu; //Recebe o tatu
     public GameObject portao;
+    public ParticleSystem ps;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Player")
         {
             t.SomMoeda();
+            var em = ps.emission;
+            em.rateOverTime = 30;
             Destroy(portao); //Deleta o portão
             Destroy(gameObject); //Deleta a chave
         }

@@ -10,8 +10,10 @@ public class Chegada : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            p1.Emit(100);
-            p2.Emit(100);
+            var em1 = p1.emission;
+            var em2 = p2.emission;
+            em1.rateOverTime = 50;
+            em2.rateOverTime = 50;
             Destroy(this);
         }
     }

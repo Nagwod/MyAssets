@@ -22,7 +22,7 @@ class Save //Modelo para salvar o jogador
     public int fasesCompletas;
     public int[] moedas = new int[4];
     public int[] tempos = new int[4];
-    public float[] velocMedia = new float[4];
+    public float[] velocMedias = new float[4];
     public int[] mortes = new int[4];
     public int[] mortesBuraco = new int[4];
     public int[] mortesEspinho = new int[4];
@@ -81,7 +81,7 @@ public class GameControl : MonoBehaviour
             fasesCompletas = fasesCompletas,
             moedas = moedas,
             tempos = tempo,
-            velocMedia = velocMedia,
+            velocMedias = velocMedia,
             mortes = mortes,
             mortesBuraco = mortesBuraco,
             mortesEspinho = mortesEspinho,
@@ -90,7 +90,8 @@ public class GameControl : MonoBehaviour
             batidasParede = batidasParede,
             batidasArvore = batidasArvore
         };
-        RestClient.Put("https://tcc-tbpdb.firebaseio.com/" + nomeAdmin + "/" + pSave.nome + ".json", pSave);
+        //RestClient.Put("https://prod-tcc-tbpdb.firebaseio.com/" + nomeAdmin + "/" + pSave.nome + ".json", pSave); //Teste oficial
+        RestClient.Put("https://db-tbp.firebaseio.com/" + nomeAdmin + "/" + pSave.nome + ".json", pSave); //Teste normal
     }
 
     /*public void RetreiveSaveData(String pNome){
@@ -116,7 +117,7 @@ public class GameControl : MonoBehaviour
                 fasesCompletas = fasesCompletas,
                 moedas = moedas,
                 tempos = tempo,
-                velocMedia = velocMedia,
+                velocMedias = velocMedia,
                 mortes = mortes,
                 mortesBuraco = mortesBuraco,
                 mortesEspinho = mortesEspinho,
@@ -146,7 +147,7 @@ public class GameControl : MonoBehaviour
                 fasesCompletas = fasesCompletas,
                 moedas = moedas,
                 tempos = tempo,
-                velocMedia = velocMedia,
+                velocMedias = velocMedia,
                 mortes = mortes,
                 mortesBuraco = mortesBuraco,
                 mortesEspinho = mortesEspinho,
@@ -173,7 +174,7 @@ public class GameControl : MonoBehaviour
             fasesCompletas = save.fasesCompletas;
             moedas = save.moedas;
             tempo = save.tempos;
-            velocMedia = save.velocMedia;
+            velocMedia = save.velocMedias;
             mortes = save.mortes;
             mortesBuraco = save.mortesBuraco;
             mortesEspinho = save.mortesEspinho;
@@ -261,10 +262,6 @@ public class GameControl : MonoBehaviour
             {
                 File.Delete(fileAdm); //Se for vazio os campos, ele deleta o admin
                 CriarAdmin(); //Cria um novo admin
-            }
-            else
-            {
-                Application.Quit(); //Se já existir um admin, ele fecha o jogo para que quando for aberto de novo, não vá para a tela de criar admin
             }
         }
     }

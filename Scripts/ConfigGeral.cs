@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ConfigGeral : MonoBehaviour
 {
-    public Rigidbody player;
     public Text tmoedas, ttempo; //Campos de texto que aparecem na tela durante a fase
     static public int moedas; //Dados a serem coletados durantre o jogo
     static public int gravcont;
@@ -18,7 +17,7 @@ public class ConfigGeral : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        //Screen.orientation = ScreenOrientation.LandscapeLeft;
         tempo = 0;
         gravMedia = 0;
         moedas = 0; //É alterada pelo script de Moeda

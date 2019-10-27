@@ -97,7 +97,7 @@ Transform:
   m_GameObject: {fileID: 758011697}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_Children: []
   m_Father: {fileID: 758011696}
   m_RootOrder: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tatu: {fileID: 0}
-  deteccao: 10
+  deteccao: 15
 --- !u!1 &758011698
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,6 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tatu: {fileID: 0}
   portao: {fileID: 0}
+  ps: {fileID: 0}
 --- !u!135 &7426326825792828024
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -221,7 +222,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.65
+  m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2123471380
 GameObject:
@@ -391,7 +392,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.2
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2

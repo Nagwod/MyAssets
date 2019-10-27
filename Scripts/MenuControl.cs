@@ -293,7 +293,7 @@ public class MenuControl : MonoBehaviour
     {
         gameControl = GameControl.gameControl; //Seta o gameControl
         squalidade.value = gameControl.qualidade; //Puxa o valor de qaulidade
-        Screen.orientation = ScreenOrientation.AutoRotation;
+        //Screen.orientation = ScreenOrientation.AutoRotation;
         if (gameControl.logado) //Verifia se existe admin
         {
             loginAdm.SetActive(false); //Se já existe, ele fecha a tela de admin
