@@ -24,25 +24,26 @@ public class Final : MonoBehaviour
     {
         ConfigGeral.gravMedia = ConfigGeral.gravsoma / ConfigGeral.gravcont;
         gameControl.Carregar(); //Carrega o save do jogador
-        if (gameControl.GetFasesCompletas() < ConfigGeral.faseAtual) //Verifica se a fase jogada era a última fase liberada
+        if (gameControl.GetFaseCompleta(ConfigGeral.faseAtual-1)<2) //Verifica se a fase jogada era a última fase liberada
         {
-            gameControl.SetFasesCompletas(ConfigGeral.faseAtual); //Libera a próxima fase
-        }
-        gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
-            ConfigGeral.faseAtual - 1,
-            ConfigGeral.moedas,
-            (int)System.Math.Floor(ConfigGeral.tempo),
-            ConfigGeral.gravMedia,
-            ConfigGeral.mortes,
-            ConfigGeral.mortesBuraco,
-            ConfigGeral.mortesEspinho,
-            ConfigGeral.mortesParedes,
-            ConfigGeral.mortesQueda,
-            ConfigGeral.batidasParedes,
-            ConfigGeral.batidasArvores
+            gameControl.SetFaseCompleta(ConfigGeral.faseAtual-1, 2); //Libera a próxima fase
+            gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
+                ConfigGeral.faseAtual - 1,
+                ConfigGeral.moedas,
+                (int)System.Math.Floor(ConfigGeral.tempo),
+                ConfigGeral.gravMedia,
+                ConfigGeral.mortes,
+                ConfigGeral.mortesBuraco,
+                ConfigGeral.mortesEspinho,
+                ConfigGeral.mortesParedes,
+                ConfigGeral.mortesQueda,
+                ConfigGeral.batidasParedes,
+                ConfigGeral.batidasArvores
             );
-        gameControl.Salvar(); //Salva os dados
-        gameControl.SendSaveToDatabase();
+            gameControl.Salvar(); //Salva os dados
+            gameControl.SendSaveToDatabase();
+        }
+        
         /*
         pontosm = ConfigGeral.moedas * 1000 / moedas; //Calcula um valor entre 0 e 1000 para cada qauntidade de moedas ente a quantidade minima e maxima
         if (ConfigGeral.tempo < tempo)

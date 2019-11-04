@@ -11,14 +11,13 @@ public class MenuControl : MonoBehaviour
     public int fase; //Variável para saber de qual fase os dados serão exibidos na tela de resultados das fases
     public Button[] botoes; //Botões para entrar nas fases
     public Button[] botoes2; //Botões para acessar os resultados das fases
-    public InputField nomeAdmCriar, senhaAdmCriar, nomeAdmLogin, senhaAdmLogin; //Campos de texto do login do admin e do cirar admin
-    public InputField nomeJogador, idadeJogador; //Campos de texto do criar jogador
-    public GameObject criarAdm, menu, loginAdm, criarJogador, loginJogador, selecaoFases, dadosJogador, avisoExclusao;
-    public GameObject erroCriarAdm, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3; //Vários objetos das telas do menu
+    public InputField nomeJogador, idadeJogador, nomeAdmCriar, emailAdmCriar, senhaAdmCriar, nomeAdmLogin, senhaAdmLogin, emailAdmAlterar, senhaAdmAlterar; //Campos de texto do login do admin e do cirar admin
+    public GameObject criarAdm, menu, loginAdm, alterarAdmin, criarJogador, loginJogador, selecaoFases, dadosJogador, avisoExclusao;
+    public GameObject erroCriarAdm, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm; //Vários objetos das telas do menu
     public Slider squalidade; //O slider que altera a qualidade do jogo
     public GameObject prefabBotao; //Botão prefab para os jogadores que forem criados
     public Transform content;//O campo de rolagem que tem os botões dos jogadores criados
-    public Text nomeIdadeDados, nomeIdadeExclusao, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
+    public Text nomeAdminAlterar, emailAdminAlterar, nomeAdminPainel, nomeIdadeDados, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
     public List<Button> botoesSaves; //Lista para acessar os botões de jogadores criados na hora de excluir
 
     public void ExibirDados() //Método para exibir os resultados das fases na tela
@@ -26,28 +25,24 @@ public class MenuControl : MonoBehaviour
         if (gameControl.GetIdadeJogaor()=="1") //Se a idade for igual a 1, exibe "ano" ao invés de "anos"
         {
             nomeIdadeDados.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " ano"; //Na tela de resultados
-            nomeIdadeExclusao.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " ano"; //Na tela aviso de exclusão
+            //nomeIdadeExclusao.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " ano"; //Na tela aviso de exclusão
         }
         else
         {
             nomeIdadeDados.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " anos"; //Na tela de resultados
-            nomeIdadeExclusao.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " anos"; //Na tela aviso de exclusão
-        }
-        if (fase == 0)
-        {
-            fase = 1;
+            //nomeIdadeExclusao.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " anos"; //Na tela aviso de exclusão
         }
         faseDados.text = "Fase " + fase + ":";
-        moedasDados.text = "Moedas: " + gameControl.GetMoedas(fase - 1);
-        tempoDados.text = "Tempo: " + gameControl.GetTempos(fase - 1);
-        velocMedDados.text = "Velocidade média: " + gameControl.GetVelocMedia(fase - 1).ToString("F") + " (Máx 15)";
-        mortesDados.text = "Total de mortes: " + gameControl.GetMortes(fase - 1);
-        mortesBuracoDados.text = "Buracos: " + gameControl.GetMortesBuraco(fase - 1);
-        mortesEspinhoDados.text = "Espinhos: " + gameControl.GetMortesEspinho(fase - 1);
-        mortesParedeDados.text = "Paredes: " + gameControl.GetMortesParede(fase - 1);
-        mortesQuedaDados.text = "Quedas: " + gameControl.GetMortesQueda(fase - 1);
-        batidasParedeDados.text = "Paredes: " + gameControl.GetBatidasParede(fase - 1);
-        batidasArvoreDados.text = "Árvores: " + gameControl.GetBatidasArvore(fase - 1);
+        moedasDados.text = "Moedas: " + gameControl.GetMoedas(fase - 1) + " (média: " + gameControl.mediaMoedas[fase-1].ToString("F") + ")";
+        tempoDados.text = "Tempo: " + gameControl.GetTempos(fase - 1) + " (média: " + gameControl.mediaTempos[fase - 1].ToString("F") + ")";
+        velocMedDados.text = "Velocidade média: " + gameControl.GetVelocMedia(fase - 1).ToString("F") + " (média: " + gameControl.mediaVeloc[fase - 1].ToString("F") + ")" + " (Máx 15)";
+        mortesDados.text = "Total de mortes: " + gameControl.GetMortes(fase - 1) + " (média: " + gameControl.mediaMortes[fase - 1] + ")";
+        mortesBuracoDados.text = "Buracos: " + gameControl.GetMortesBuraco(fase - 1) + " (média: " + gameControl.mediaMorteBuraco[fase - 1].ToString("F") + ")";
+        mortesEspinhoDados.text = "Espinhos: " + gameControl.GetMortesEspinho(fase - 1) + " (média: " + gameControl.mediaMorteEspinho[fase - 1].ToString("F") + ")";
+        mortesParedeDados.text = "Paredes: " + gameControl.GetMortesParede(fase - 1) + " (média: " + gameControl.mediaMorteParede[fase - 1].ToString("F") + ")";
+        mortesQuedaDados.text = "Quedas: " + gameControl.GetMortesQueda(fase - 1) + " (média: " + gameControl.mediaMorteQueda[fase - 1].ToString("F") + ")";
+        batidasParedeDados.text = "Paredes: " + gameControl.GetBatidasParede(fase - 1) + " (média: " + gameControl.mediaBatidaParede[fase - 1].ToString("F") + ")";
+        batidasArvoreDados.text = "Árvores: " + gameControl.GetBatidasArvore(fase - 1) + " (média: " + gameControl.mediaBatidaArvore[fase - 1].ToString("F") + ")";
     }
 
     public void AcessarDadosJogador() //Método para acessar a tela de dados do jogador
@@ -59,11 +54,15 @@ public class MenuControl : MonoBehaviour
         {
             b.interactable = false; //Desativa os botões de fase
         }
-        for (int i = 0; i < gameControl.GetFasesCompletas(); i++)
+        for (int i = 0; i <=3; i++)
         {
-            botoes2[i].interactable = true; //Ativa os botões das fases jogadas
+            if (gameControl.GetFaseCompleta(i)>0)
+            {
+                botoes2[i].interactable = true; //Ativa os botões das fases jogadas
+            }
         }
-        fase = 0; //Para entrar sem nenhuma fase selecionada
+        fase = 1; //Para entrar sem nenhuma fase selecionada
+        gameControl.MediaSaves();
         ExibirDados(); //Para exibir os dados na tela
     }
 
@@ -73,13 +72,13 @@ public class MenuControl : MonoBehaviour
         {
             b.interactable = false; //Desativa os botões das fases
         }
-        for (int i = 0; i <= gameControl.GetFasesCompletas(); i++)
+        botoes[0].interactable = true;
+        for (int i = 1; i <= 3; i++)
         {
-            if (i == 4)
+            if (gameControl.GetFaseCompleta(i-1)>1)
             {
-                break;
+                botoes[i].interactable = true; //Ativa os botões das fases liberadas
             }
-            botoes[i].interactable = true; //Ativa os botões das fases liberadas
         }
     }
 
@@ -93,13 +92,14 @@ public class MenuControl : MonoBehaviour
 
     public void CriaAdm() //Método para chamar o método de criar o admin
     {
-        if ((nomeAdmCriar.text.Equals("") || senhaAdmCriar.text.Equals(""))) //Se nenhum dos campos for vazio, ele permite que seja criado
+        if (nomeAdmCriar.text.Equals("") || emailAdmCriar.text.Equals("") || senhaAdmCriar.text.Equals("")) //Se nenhum dos campos for vazio, ele permite que seja criado
         {
             erroCriarAdm.SetActive(true); //Se um dos campos for vazio, exibe a mensagem de erro na tela
         }
         else
         {
             gameControl.SetNomeAdmin(nomeAdmCriar.text); //Seta o nome do admin para criá-lo
+            gameControl.SetEmailAdmin(emailAdmCriar.text); //Seta o nome do admin para criá-lo
             gameControl.SetSenhaAdmin(senhaAdmCriar.text); //Seta a senha do admin para criá-lo
             gameControl.CriarAdmin(); //Cria o admin
             criarAdm.SetActive(false); //Troca de tela
@@ -114,8 +114,18 @@ public class MenuControl : MonoBehaviour
         gameControl.SetSenhaAdmin(senhaAdmLogin.text); //Seta a senha do admin para autenticar
         if (gameControl.Autenticar()) //Faz a autenticação
         {
+            gameControl.CarregarAdmin();
+            foreach (string save in gameControl.GetSaves()) //percorre todos os saves
+            {
+                GameObject go = Instantiate(prefabBotao) as GameObject; //Instancia o botão prefab para cada jogador (na tela de jogador)
+                go.transform.SetParent(content); //Coloca o botão no campo de rolagem (na tela de admin)
+                go.GetComponentInChildren<Text>().text = save; //Coloca o nome do jogador no texto do botão
+                botoesSaves.Add(go.GetComponent<Button>()); //Coloca o botão na lista
+                                                            //go.GetComponent<Button>().onClick.AddListener(() => LogarJogador(save));
+            }
             loginAdm.SetActive(false); //Troca de tela
             loginJogador.SetActive(true); //Troca de tela
+            nomeAdminPainel.text = gameControl.GetNomeAdmin();
             ApagaErros(); //Apaga as mensagens de erros das telas
             ApagaTextos(); //Apaga os campos de texto
             gameControl.logado = true;
@@ -124,6 +134,39 @@ public class MenuControl : MonoBehaviour
         {
             erroLoginAdm.SetActive(true); //Se os dados estiverem incorretos, exibe a mensagem de erro
         }
+    }
+
+    public void AlterarAdm()
+    {
+        if (emailAdmAlterar.text.Equals("") && senhaAdmAlterar.text.Equals(""))
+        {
+            ApagaErros();
+            naoAlteradoAdm.SetActive(true);
+        }
+        else
+        {
+            if (emailAdmAlterar.text != "")
+            {
+                gameControl.SetEmailAdmin(emailAdmAlterar.text);
+            }
+            if (senhaAdmAlterar.text != "")
+            {
+                gameControl.SetSenhaAdmin(senhaAdmAlterar.text);
+            }
+            gameControl.AlterarAdmin();
+            ApagaErros();
+            alteradoAdm.SetActive(true);
+        }
+    }
+
+    public void ExcluirAdm() //Método que chama o método de excluir o admin
+    {
+        gameControl.ExcluirAdmin(); //Apaga o admin
+        avisoExclusao.SetActive(false); //Fecha a tela de aviso de exclusão
+        alterarAdmin.SetActive(false); //Fecha a tela de alterar dados do admin
+        loginAdm.SetActive(true); //Abre a tela de login
+        ApagaErros();
+        ApagaTextos();
     }
 
     public void CriaJogador() //Método que chama o método que cria o jogador
@@ -164,15 +207,6 @@ public class MenuControl : MonoBehaviour
         }
     }
 
-    public void ExcluirJogador() //Método que chama o método de excluir o jogador
-    {
-        ExcluiBotao(); //Exclui o botão do jogador
-        gameControl.Apagar(); //Apaga o save do jogador
-        avisoExclusao.SetActive(false); //Fecha a tela de aviso de exclusão
-        dadosJogador.SetActive(false); //Fecha a tela de dados do jogador
-        loginJogador.SetActive(true); //Abre a tela de admin
-    }
-
     public void ApagaErros() //Apaga as mensagens de erro
     {
         erroCriarAdm.SetActive(false);
@@ -180,14 +214,19 @@ public class MenuControl : MonoBehaviour
         erroCriarJogador2.SetActive(false);
         erroCriarJogador3.SetActive(false);
         erroLoginAdm.SetActive(false);
+        naoAlteradoAdm.SetActive(false);
+        alteradoAdm.SetActive(false);
     }
     public void ApagaTextos() //Apaga os campos de texto
     {
         nomeAdmCriar.text = "";
-        nomeAdmLogin.text = "";
-        nomeJogador.text = "";
+        emailAdmCriar.text = "";
         senhaAdmCriar.text = "";
+        nomeAdmLogin.text = "";
         senhaAdmLogin.text = "";
+        emailAdminAlterar.text = "";
+        senhaAdmAlterar.text = "";
+        nomeJogador.text = "";
         idadeJogador.text = "";
     }
 
@@ -229,7 +268,22 @@ public class MenuControl : MonoBehaviour
         ExibirDados(); //Troca os dados
     }
 
+    public void SetNomeAdmAlterar()
+    {
+        nomeAdminAlterar.text = "Nome: " + gameControl.GetNomeAdmin();
+        emailAdminAlterar.text = "E-mail: " + gameControl.GetEmailAdmin();
+    }
+
     /*
+    public void ExcluirJogador() //Método que chama o método de excluir o jogador
+    {
+        ExcluiBotao(); //Exclui o botão do jogador
+        gameControl.Apagar(); //Apaga o save do jogador
+        avisoExclusao.SetActive(false); //Fecha a tela de aviso de exclusão
+        dadosJogador.SetActive(false); //Fecha a tela de dados do jogador
+        loginJogador.SetActive(true); //Abre a tela de admin
+    }
+
     public void SetSaveText()
     {
         tsave1.text = gameControl.FileToString(1);
@@ -300,13 +354,5 @@ public class MenuControl : MonoBehaviour
             menu.SetActive(true); //e abre o menu
         }
         gameControl.CarregarAdmin(); //Carrega o admin (se existir)
-        foreach (string save in gameControl.GetSaves()) //percorre todos os saves
-        {
-            GameObject go = Instantiate(prefabBotao) as GameObject; //Instancia o botão prefab para cada jogador (na tela de jogador)
-            go.transform.SetParent(content); //Coloca o botão no campo de rolagem (na tela de admin)
-            go.GetComponentInChildren<Text>().text = save; //Coloca o nome do jogador no texto do botão
-            botoesSaves.Add(go.GetComponent<Button>()); //Coloca o botão na lista
-            //go.GetComponent<Button>().onClick.AddListener(() => LogarJogador(save));
-        }
     }
 }

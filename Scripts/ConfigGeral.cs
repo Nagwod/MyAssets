@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ConfigGeral : MonoBehaviour
 {
+    GameControl gameControl;
     public Text tmoedas, ttempo; //Campos de texto que aparecem na tela durante a fase
     static public int moedas; //Dados a serem coletados durantre o jogo
     static public int gravcont;
@@ -17,6 +18,7 @@ public class ConfigGeral : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameControl = GameControl.gameControl; //Seta o gameControl
         //Screen.orientation = ScreenOrientation.LandscapeLeft;
         tempo = 0;
         gravMedia = 0;
@@ -32,6 +34,30 @@ public class ConfigGeral : MonoBehaviour
         faseAtual = fase; //Recebe a fase
         gravsoma = 0;
         gravcont = 0;
+        StartCoroutine(AutoSave());
+    }
+
+    IEnumerator AutoSave()
+    {
+        yield return new WaitForSeconds(5);
+        if (gameControl.GetFaseCompleta(faseAtual - 1) < 1) //Verifica se a fase jogada era a última fase liberada
+        {
+            gameControl.SetFaseCompleta(faseAtual-1, 1);
+        }
+        gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
+            faseAtual - 1,
+            moedas,
+            (int)System.Math.Floor(tempo),
+            gravMedia,
+            mortes,
+            mortesBuraco,
+            mortesEspinho,
+            mortesParedes,
+            mortesQueda,
+            batidasParedes,
+            batidasArvores
+        );
+        gameControl.Salvar();
     }
 
     // Update is called once per frame
