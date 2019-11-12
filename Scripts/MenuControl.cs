@@ -14,7 +14,6 @@ public class MenuControl : MonoBehaviour
     public InputField nomeJogador, idadeJogador, nomeAdmCriar, emailAdmCriar, senhaAdmCriar, nomeAdmLogin, senhaAdmLogin, emailAdmAlterar, senhaAdmAlterar; //Campos de texto do login do admin e do cirar admin
     public GameObject criarAdm, menu, loginAdm, alterarAdmin, criarJogador, loginJogador, selecaoFases, dadosJogador, avisoExclusao;
     public GameObject erroCriarAdm, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm; //Vários objetos das telas do menu
-    public Slider squalidade; //O slider que altera a qualidade do jogo
     public GameObject prefabBotao; //Botão prefab para os jogadores que forem criados
     public Transform content;//O campo de rolagem que tem os botões dos jogadores criados
     public Text nomeAdminAlterar, emailAdminAlterar, nomeAdminPainel, nomeIdadeDados, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
@@ -235,12 +234,6 @@ public class MenuControl : MonoBehaviour
         gameControl.logado = false;
     }
 
-    public void MudaQualidade() //Altera a qualidade do jogo
-    {
-        QualitySettings.SetQualityLevel((int)squalidade.value, true); //Altera o valor da qualidade baseado no valor da posição do slider
-        gameControl.qualidade = (int)squalidade.value; //Muda a variável que salva o valor de qualidade para quando o jogo for aberto de novo
-    }
-
     public void CriaBotao() //Cria o botão correspondente ao novo jogador criado
     {
         GameObject go = Instantiate(prefabBotao) as GameObject; //Instancia o prefab do botão (na tela de jogador)
@@ -346,9 +339,8 @@ public class MenuControl : MonoBehaviour
     void Start()
     {
         gameControl = GameControl.gameControl; //Seta o gameControl
-        squalidade.value = gameControl.qualidade; //Puxa o valor de qaulidade
         //Screen.orientation = ScreenOrientation.AutoRotation;
-        if (gameControl.logado) //Verifia se existe admin
+        if (gameControl.logado) //Verifia se existe admin logado
         {
             loginAdm.SetActive(false); //Se já existe, ele fecha a tela de admin
             menu.SetActive(true); //e abre o menu

@@ -25,8 +25,8 @@ public class ConfigGeral : MonoBehaviour
         moedas = 0; //É alterada pelo script de Moeda
         mortes = 0;
         mortesBuraco = 0; //É alterada pelo script Cai
-        mortesEspinho = 0;  //É alterada pelo script Espinho
-        mortesParedes = 0;  //É alterada pelo script Esmaga
+        mortesEspinho = 0; //É alterada pelo script Espinho
+        mortesParedes = 0; //É alterada pelo script Esmaga
         mortesQueda = 0; //É alterada pelo script Cai
         batidasParedes = 0; //É alterada pelo script do Tatu
         batidasArvores = 0; //É alterada pelo script do Tatu

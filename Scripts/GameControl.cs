@@ -37,7 +37,7 @@ class Save //Modelo para salvar o jogador
 public class GameControl : MonoBehaviour
 {
     //Save cloudSave = new Save(); // variável de controle para o save
-    public int qualidade, volume;
+    public int volume, qualidade;
     public bool logado;
     public static GameControl gameControl;
     public string filePath, fileAdm; //Caminhos dos arquivos
@@ -532,9 +532,10 @@ public class GameControl : MonoBehaviour
 
     private void Awake()
     {
-        qualidade = 3; //Por enquanto o nível de qualidade padrão é 3
         filePath = Application.persistentDataPath + "/Save"; //Caminho do save do jogador
         fileAdm = Application.persistentDataPath + "/Admin"; //Caminho do save do Admin
+        volume = 7;
+        qualidade = 2;
         Screen.sleepTimeout = SleepTimeout.NeverSleep; //Nunca apagar a tela
 
         if (gameControl == null) //Garante que só exista 1 game control
