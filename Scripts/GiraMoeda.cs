@@ -5,9 +5,9 @@ using UnityEngine;
 public class GiraMoeda : MonoBehaviour
 {
     GameControl gameControl;
-    public GameObject tatu; //Recebe o tatu
-    private bool trigger;
-    public int deteccao;
+    [SerializeField] private GameObject tatu; //Recebe o tatu
+    [SerializeField] private bool trigger;
+    [SerializeField] private int deteccao;
 
     IEnumerator Gira()
     {

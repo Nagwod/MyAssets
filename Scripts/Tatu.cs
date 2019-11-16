@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class Tatu : MonoBehaviour
 {
-    public Rigidbody rigid;
-    public Camera cam;
-    public Camera mapa;
-    public GameObject marcador;
-    public TrailRenderer trail;
-    public float velocidadex, velocidadez;
-    public Vector3 velocidade;
-    public int altcam, altMinimapa, altMarcador;
-    private AudioSource source;
+    [SerializeField] private Rigidbody rigid;
+    [SerializeField] private Camera cam;
+    [SerializeField] private Camera mapa;
+    [SerializeField] private GameObject marcador;
+    [SerializeField] private TrailRenderer trail;
+    [SerializeField] private float velocidadex, velocidadez;
+    [SerializeField] private float inclinaX, inclinaY;
+    [SerializeField] private Vector3 velocidade;
+    [SerializeField] private int altcam, altMinimapa, altMarcador;
+    public Vector3 checkpoint;
     static public bool podeMover;
-    public float x, y;
+    private AudioSource source;
     private readonly int andar = 20, correr = 25;
     private readonly float max = 0.6f;
-    public Vector3 checkpoint;
+    
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -66,40 +67,40 @@ public class Tatu : MonoBehaviour
         {
             if (Input.acceleration.x != 0 || Input.acceleration.y != 0)
             {
-                x = -Input.acceleration.x;
-                y = -Input.acceleration.y - 0.2f;
-                if (x >= max)
+                inclinaX = -Input.acceleration.x;
+                inclinaY = -Input.acceleration.y - 0.2f;
+                if (inclinaX >= max)
                 {
-                    x = max;
-                    velocidadex = x * correr;
+                    inclinaX = max;
+                    velocidadex = inclinaX * correr;
                 }
                 else
                 {
-                    if (x <= -max)
+                    if (inclinaX <= -max)
                     {
-                        x = -max;
-                        velocidadex = x * correr;
+                        inclinaX = -max;
+                        velocidadex = inclinaX * correr;
                     }
                     else
                     {
-                        velocidadex = x * andar;
+                        velocidadex = inclinaX * andar;
                     }
                 }
-                if (y >= max)
+                if (inclinaY >= max)
                 {
-                    y = max;
-                    velocidadez = y * correr;
+                    inclinaY = max;
+                    velocidadez = inclinaY * correr;
                 }
                 else
                 {
-                    if (y <= -max)
+                    if (inclinaY <= -max)
                     {
-                        y = -max;
-                        velocidadez = y * correr;
+                        inclinaY = -max;
+                        velocidadez = inclinaY * correr;
                     }
                     else
                     {
-                        velocidadez = y * andar;
+                        velocidadez = inclinaY * andar;
                     }
                 }
                 Physics.gravity = new Vector3(velocidadex, Physics.gravity.y, velocidadez);

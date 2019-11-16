@@ -5,15 +5,18 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     Tatu t; //Variável do tipo tatu
-    public GameObject tatu; //Recebe o tatu
-    public ParticleSystem p1, p2;
-    public int altCheckpoint;
+    [SerializeField] private GameObject tatu; //Recebe o tatu
+    [SerializeField] private AudioSource a1, a2;
+    [SerializeField] private ParticleSystem p1, p2;
+    [SerializeField] private int altCheckpoint;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             t.checkpoint = new Vector3(transform.position.x, transform.position.y + altCheckpoint, transform.position.z);
+            a1.Play();
+            a2.Play();
             var em1 = p1.emission;
             var em2 = p2.emission;
             em1.rateOverTime = 50;

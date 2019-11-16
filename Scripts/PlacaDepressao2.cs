@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlacaDepressao2 : MonoBehaviour
 {
-    public GameObject ponte;
-    public bool fechado;
+    [SerializeField] private GameObject ponte;
+    [SerializeField] private bool fechado;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,15 +24,4 @@ public class PlacaDepressao2 : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

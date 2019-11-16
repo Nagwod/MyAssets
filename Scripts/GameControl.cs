@@ -37,25 +37,23 @@ class Save //Modelo para salvar o jogador
 public class GameControl : MonoBehaviour
 {
     //Save cloudSave = new Save(); // variável de controle para o save
-    public int volume, qualidade;
-    public bool logado;
     public static GameControl gameControl;
-    public string filePath, fileAdm; //Caminhos dos arquivos
-    //private List<string> filePath = new List<string>();
-    public string nomeAdmin, senhaAdmin, emailAdmin;
-    public List<string> saves = new List<string>(); //Lista para controlar os saves
-    public string nomeJogador, idadeJogador;
-    public int[] faseCompleta = new int[4]; //0: não jogada, 1: incompleta, 2:completa
-    public int[] moedas = new int[4];
-    public int[] tempo = new int[4];
-    public float[] velocMedia = new float[4];
-    public int[] mortes = new int[4];
-    public int[] mortesEspinho = new int[4];
-    public int[] mortesParede = new int[4];
-    public int[] mortesBuraco = new int[4];
-    public int[] mortesQueda = new int[4];
-    public int[] batidasParede = new int[4];
-    public int[] batidasArvore = new int[4];
+    [SerializeField] private string filePath, fileAdm; //Caminhos dos arquivos
+    public bool logado;
+    private string nomeAdmin, senhaAdmin, emailAdmin;
+    private List<string> saves = new List<string>(); //Lista para controlar os saves
+    private string nomeJogador, idadeJogador;
+    private int[] faseCompleta = new int[4]; //0: não jogada, 1: incompleta, 2:completa
+    private int[] moedas = new int[4];
+    private int[] tempo = new int[4];
+    private float[] velocMedia = new float[4];
+    private int[] mortes = new int[4];
+    private int[] mortesEspinho = new int[4];
+    private int[] mortesParede = new int[4];
+    private int[] mortesBuraco = new int[4];
+    private int[] mortesQueda = new int[4];
+    private int[] batidasParede = new int[4];
+    private int[] batidasArvore = new int[4];
     public float[] mediaMoedas = new float[4];
     public float[] mediaTempos = new float[4];
     public float[] mediaVeloc = new float[4];
@@ -66,7 +64,7 @@ public class GameControl : MonoBehaviour
     public float[] mediaMorteQueda = new float[4];
     public float[] mediaBatidaParede = new float[4];
     public float[] mediaBatidaArvore = new float[4];
-    //public int[] pontos = new int[4];
+    //private int[] pontos = new int[4];
 
     public void SendSaveToDatabase()
     {
@@ -534,8 +532,6 @@ public class GameControl : MonoBehaviour
     {
         filePath = Application.persistentDataPath + "/Save"; //Caminho do save do jogador
         fileAdm = Application.persistentDataPath + "/Admin"; //Caminho do save do Admin
-        volume = 7;
-        qualidade = 2;
         Screen.sleepTimeout = SleepTimeout.NeverSleep; //Nunca apagar a tela
 
         if (gameControl == null) //Garante que só exista 1 game control

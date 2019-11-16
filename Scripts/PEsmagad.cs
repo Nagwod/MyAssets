@@ -5,29 +5,22 @@ using UnityEngine;
 
 public class PEsmagad : MonoBehaviour
 {
-    public GameObject player;
-    public int deteccao;
-    public GameObject parede1, parede2;
-    public float distancia; //metade da distância entre as duas paredes
-    //public float inicio; //Tempo que leva para iniciar o ciclo
-    public float intervalo1, intervalo2; //Intervalo1: tempo de intervalo aberto. Intervalo2: tempo de intervalo fechado
-    public bool x, y, z; //Direção que as paredes se fecham
-    //private int cont; //quandno estiver zerado, signia que a parede deve fechar, caso contrário, deve abrir
+    [SerializeField] private GameObject player;
+    [SerializeField] private int deteccao;
+    [SerializeField] private GameObject parede1, parede2;
+    [SerializeField] private float distancia; //metade da distância entre as duas paredes
+    [SerializeField] private float intervalo1, intervalo2; //Intervalo1: tempo de intervalo aberto. Intervalo2: tempo de intervalo fechado
+    [SerializeField] private bool x, y, z; //Direção que as paredes se fecham
+    [SerializeField] private bool trigger;
     public bool fechando; //está fechando ou abrindo
     private float posinic, posfin; //pega a posição onde a prede deve iniciar o movimento de fechar e finalizar o movimento de abrir
     private int a; //coresponde ao eixo em que a parede vai se movimentar
-    public bool trigger;
     private AudioSource source;
 
     IEnumerator Fecha()
     {
         if (trigger)
         {
-            //if (cont == 0)
-            //{
-            //    yield return new WaitForSeconds(inicio); //Início (só uma vez)
-            //    cont++;
-            //}
             yield return new WaitForSeconds(intervalo1);
             fechando = true;
             while (parede1.transform.position[a] * -1 < -posfin) //Fecha

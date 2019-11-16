@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Respawn : MonoBehaviour
 {
-    public Material[] grama;
-    public Material[] borda;
+    [SerializeField] private Material[] grama;
+    [SerializeField] private Material[] borda;
+    [SerializeField] private TrailRenderer trail;
     private Color[] cor = new Color[10];
     private Color[] corRastro = new Color[7];
-    public TrailRenderer trail;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,23 +31,6 @@ public class Respawn : MonoBehaviour
         
     }
 
-    /*
-    IEnumerator TrocaCor()
-    {
-        int index = Random.Range(0, cor.Length);
-        for (int i=0;i<grama.Length;i++)
-        {
-            grama[i].color = cor[index];
-        }
-        index = Random.Range(0, cor.Length);
-        for (int i = 0; i < borda.Length; i++)
-        {
-            borda[i].color = cor[index];
-        }
-        yield return (new WaitForSeconds(1));
-        StartCoroutine(TrocaCor());
-    }*/
-
     // Start is called before the first frame update
     void Start()
     {
@@ -68,12 +51,6 @@ public class Respawn : MonoBehaviour
         corRastro[4] = new Vector4(0, 1, 1, 1);
         corRastro[5] = new Vector4(0, 1, 0, 1);
         corRastro[6] = new Vector4(0, 0, 1, 1);
-        //StartCoroutine(TrocaCor());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

@@ -6,12 +6,10 @@ public class Detecao : MonoBehaviour
 {
     //Script da fase do labirinto 3D para mudar a câmera
 
-    public int area;
-    public int posicao;
-    public Camera cam;
-    public GameObject luz;
-    public GameObject mapa;
-    public GameObject player;
+    [SerializeField] private int area;
+    [SerializeField] private int posicao;
+    [SerializeField] private Camera cam;
+    [SerializeField] private GameObject luz, mapa, player;
 
     public void OnCollisionStay(Collision collision)
     {

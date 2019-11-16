@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PlacaDepressao : MonoBehaviour
 {
-    public GameObject portao, cadeado;
+    [SerializeField] private GameObject portao, cadeado;
+    [SerializeField] private bool reverse;
+    [SerializeField] private AudioClip somAbre, somFecha;
+    private AudioSource source;
     private Vector3 posinic;
-    public bool reverse;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,12 +19,16 @@ public class PlacaDepressao : MonoBehaviour
                 if (portao.transform.position == posinic)
                 {
                     portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y - 2, portao.transform.position.z); //Desce o portão
-                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y - 20, cadeado.transform.position.z);
+                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y - 100, cadeado.transform.position.z);
+                    source.clip = somFecha; //Passa o som pro controlador
+                    source.Play(0); //Toca o som
                 }
                 else
                 {
                     portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 2, portao.transform.position.z); //Sobe o portão
-                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y + 20, cadeado.transform.position.z);
+                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y + 100, cadeado.transform.position.z);
+                    source.clip = somAbre; //Passa o som pro controlador
+                    source.Play(0); //Toca o som
                 }
             }
             else
@@ -30,12 +36,16 @@ public class PlacaDepressao : MonoBehaviour
                 if (portao.transform.position == posinic)
                 {
                     portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y + 2, portao.transform.position.z); //Sobe o portão
-                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y + 20, cadeado.transform.position.z);
+                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y + 100, cadeado.transform.position.z);
+                    source.clip = somAbre; //Passa o som pro controlador
+                    source.Play(0); //Toca o som
                 }
                 else
                 {
                     portao.transform.position = new Vector3(portao.transform.position.x, portao.transform.position.y - 2, portao.transform.position.z); //Desce o portão
-                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y - 20, cadeado.transform.position.z);
+                    cadeado.transform.position = new Vector3(cadeado.transform.position.x, cadeado.transform.position.y - 100, cadeado.transform.position.z);
+                    source.clip = somFecha; //Passa o som pro controlador
+                    source.Play(0); //Toca o som
                 }
             }
         }
@@ -45,11 +55,7 @@ public class PlacaDepressao : MonoBehaviour
     void Start()
     {
         posinic = portao.transform.position;
+        source = GetComponent<AudioSource>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class Cai : MonoBehaviour
 {
     Tatu t;
-    public Rigidbody tatu;
+    [SerializeField] private Rigidbody tatu;
+    [SerializeField] private TrailRenderer trail;
+    [SerializeField] private bool buraco;
     private AudioSource source;
-    public TrailRenderer trail;
-    public bool buraco;
 
     private void OnTriggerEnter(Collider other)
     {

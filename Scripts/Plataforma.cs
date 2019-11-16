@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Plataforma : MonoBehaviour
 {
-    public float velocidade, intervalo;
-    public bool x, y, z; //Define o eixo de movimentação
-    public float posicao1, posicao2;
-    public Rigidbody player;
-    public bool transportando; //Transportando o tatu
+    [SerializeField] private float velocidade, intervalo;
+    [SerializeField] private bool x, y, z; //Define o eixo de movimentação
+    [SerializeField] private float posicao1, posicao2;
+    [SerializeField] private Rigidbody player;
+    [SerializeField] private bool transportando; //Transportando o tatu
+    [SerializeField] private int deteccao;
     private bool trigger;
-    public int deteccao;
 
     private void OnCollisionStay(Collision collision)
     {

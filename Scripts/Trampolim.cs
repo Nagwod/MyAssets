@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Trampolim : MonoBehaviour
 {
-    public Rigidbody player;
-    public int potencia; //Força do pulo
-    public AudioClip[] som; //Vetor de sons
-    public AudioSource source;
+    [SerializeField] private Rigidbody player;
+    [SerializeField] private int potencia; //Força do pulo
+    [SerializeField] private AudioClip[] som; //Vetor de sons
+    [SerializeField] private AudioSource source;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,14 +20,4 @@ public class Trampolim : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

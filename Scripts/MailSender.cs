@@ -9,9 +9,9 @@ using UnityEngine.UI;
 public class MailSender : MonoBehaviour
 {
     GameControl gameControl;
-    public InputField nomeAdm, emailAdm;
-    public GameObject erroRecuperar, erroEnviar, enviado;
-    public Text env;
+    [SerializeField] private InputField nomeAdm, emailAdm;
+    [SerializeField] private GameObject erroRecuperar, erroEnviar, enviado;
+    [SerializeField] private Text env;
 
     //SMTP
     public void SendSmtpMail()

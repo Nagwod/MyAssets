@@ -5,22 +5,21 @@ using UnityEngine;
 public class Esmaga : MonoBehaviour
 {
     Esmaga e; //Variavel do tipo do objeto que controla as paredes
-    public GameObject esmaga; //Recebe o objeto que controla as paredes
+    [SerializeField] private GameObject esmaga; //Recebe o objeto que controla as paredes
     PEsmagad esm; //Variavel do tipo parede
-    public GameObject esmagador; //Recebe a outra parede
+    [SerializeField] private GameObject esmagador; //Recebe a outra parede
     Tatu t;
-    public Rigidbody player;
+    [SerializeField] private Rigidbody player;
+    [SerializeField] private AudioSource source;
+    [SerializeField] private TrailRenderer trail;
     private bool fechando;
-    public AudioClip[] som; //Vetor de sons
-    public AudioSource source;
-    public TrailRenderer trail;
 
     private void OnCollisionEnter(Collision collision)
     {
-
-        if (collision.transform.CompareTag("Player") && Tatu.podeMover)
+        if (collision.transform.CompareTag("Player") && fechando)
         {
-            if (fechando)
+            source.Play(); //Toca o som
+            if (Tatu.podeMover)
             {
                 StartCoroutine(Delay());
             }
@@ -29,20 +28,16 @@ public class Esmaga : MonoBehaviour
 
     IEnumerator Delay()
     {
-        if (!e.source.isPlaying) //Só mata se o som de morte não estiver tocando na outra parede
-        {
-            int index = Random.Range(0, som.Length); //Escolhe um som aleatório
-            source.clip = som[index]; //Passa o som pro controle
-            source.Play(); //Toca o som
-            Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
-            trail.emitting = false;
-            Tatu.podeMover = false;
-            yield return new WaitForSeconds(0.4f);
-            player.velocity = new Vector3(0, 0, 0); //Para o tatu
-            player.transform.position = t.checkpoint; //Manda o tatu pro checkpoint
-            ConfigGeral.mortesParedes++;
-            ConfigGeral.mortes++;
-        }
+        Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
+        trail.emitting = false;
+        Tatu.podeMover = false;
+        player.transform.localScale = new Vector3(1, 1, 0.01f);
+        yield return new WaitForSeconds(0.5f);
+        player.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+        player.velocity = new Vector3(0, 0, 0); //Para o tatu
+        player.transform.position = t.checkpoint; //Manda o tatu pro checkpoint
+        ConfigGeral.mortesParedes++;
+        ConfigGeral.mortes++;
     }
 
     // Start is called before the first frame update

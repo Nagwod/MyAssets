@@ -6,9 +6,9 @@ public class Maze3D : MonoBehaviour
 {
     //Script da fase do labirinto 3D
 
-    public float velocRotacao;
-    public float rotacao;
-    public Quaternion a;
+    [SerializeField] private float velocRotacao;
+    [SerializeField] private float rotacao;
+    [SerializeField] private Quaternion a;
     static public int controles;
 
     // Start is called before the first frame update

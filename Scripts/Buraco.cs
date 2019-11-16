@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Buraco : MonoBehaviour
 {
-    public Vector3 checkpoint;
-    public float timer;
-    public Rigidbody tatu;
+    [SerializeField] private Vector3 checkpoint;
+    [SerializeField] private float timer;
+    [SerializeField] private Rigidbody tatu;
 
     private void OnTriggerEnter(Collider other)
     {

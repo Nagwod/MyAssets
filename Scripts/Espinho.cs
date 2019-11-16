@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Espinho : MonoBehaviour
 {
-    public int pulo;
-    public float timer;
     Tatu t;
-    public Rigidbody tatu;
+    [SerializeField] private Rigidbody tatu;
+    [SerializeField] private int pulo;
+    [SerializeField] private float timer;
+    [SerializeField] private TrailRenderer trail;
     private AudioSource source;
-    public TrailRenderer trail;
 
     private void OnCollisionEnter(Collision collision)
     {

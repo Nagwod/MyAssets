@@ -5,10 +5,8 @@ using UnityEngine;
 public class ParticleStop : MonoBehaviour
 {
     private ParticleSystem ps;
-    [SerializeField]
-    private int e;
-    [SerializeField]
-    private float tempo;
+    [SerializeField] private int e;
+    [SerializeField] private float tempo;
 
     // Start is called before the first frame update
     void Start()

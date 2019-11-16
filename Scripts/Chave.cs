@@ -4,27 +4,33 @@ using UnityEngine;
 
 public class Chave : MonoBehaviour
 {
-    Tatu t; //Variável do tipo tatu
-    public GameObject tatu; //Recebe o tatu
-    public GameObject portao;
-    public ParticleSystem ps;
+    [SerializeField] private AudioSource source;
+    [SerializeField] private GameObject portao;
+    [SerializeField] private ParticleSystem ps;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Player")
         {
-            t.SomMoeda();
+            source.Play();
             var em = ps.emission;
             em.rateOverTime = 30;
             Destroy(portao); //Deleta o portão
-            Destroy(gameObject); //Deleta a chave
+            transform.position = new Vector3(transform.position.x, transform.position.y-5, transform.position.z);
+            StartCoroutine(Delay());
         }
+    }
+
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject); //Deleta a chave
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        t = tatu.GetComponent<Tatu>();
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

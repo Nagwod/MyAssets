@@ -5,19 +5,17 @@ using UnityEngine.UI;
 
 public class MenuControl : MonoBehaviour
 {
-    GameControl gameControl; //Variável do tipo gamecontrol, para acessar os métodos de lá 
-    //public Text tsave1, tsave2, tsave3;
-    //public Text tpontuacao, tpontos;
-    public int fase; //Variável para saber de qual fase os dados serão exibidos na tela de resultados das fases
-    public Button[] botoes; //Botões para entrar nas fases
-    public Button[] botoes2; //Botões para acessar os resultados das fases
-    public InputField nomeJogador, idadeJogador, nomeAdmCriar, emailAdmCriar, senhaAdmCriar, nomeAdmLogin, senhaAdmLogin, emailAdmAlterar, senhaAdmAlterar; //Campos de texto do login do admin e do cirar admin
-    public GameObject criarAdm, menu, loginAdm, alterarAdmin, criarJogador, loginJogador, selecaoFases, dadosJogador, avisoExclusao;
-    public GameObject erroCriarAdm, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm; //Vários objetos das telas do menu
-    public GameObject prefabBotao; //Botão prefab para os jogadores que forem criados
-    public Transform content;//O campo de rolagem que tem os botões dos jogadores criados
-    public Text nomeAdminAlterar, emailAdminAlterar, nomeAdminPainel, nomeIdadeDados, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
-    public List<Button> botoesSaves; //Lista para acessar os botões de jogadores criados na hora de excluir
+    GameControl gameControl; //Variável do tipo gamecontrol, para acessar os métodos de lá
+    private int fase; //Variável para saber de qual fase os dados serão exibidos na tela de resultados das fases
+    [SerializeField] private Button[] botoes; //Botões para entrar nas fases
+    [SerializeField] private Button[] botoes2; //Botões para acessar os resultados das fases
+    [SerializeField] private InputField nomeJogador, idadeJogador, nomeAdmCriar, emailAdmCriar, senhaAdmCriar, nomeAdmLogin, senhaAdmLogin, emailAdmAlterar, senhaAdmAlterar; //Campos de texto do login do admin e do cirar admin
+    [SerializeField] private GameObject criarAdm, menu, loginAdm, alterarAdmin, criarJogador, loginJogador, selecaoFases, dadosJogador, avisoExclusao;
+    [SerializeField] private GameObject erroCriarAdm, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm; //Vários objetos das telas do menu
+    [SerializeField] private GameObject prefabBotao; //Botão prefab para os jogadores que forem criados
+    [SerializeField] private Transform content;//O campo de rolagem que tem os botões dos jogadores criados
+    [SerializeField] private Text nomeAdminAlterar, emailAdminAlterar, nomeAdminPainel, nomeIdadeDados, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
+    [SerializeField] private List<Button> botoesSaves; //Lista para acessar os botões de jogadores criados na hora de excluir
 
     public void ExibirDados() //Método para exibir os resultados das fases na tela
     {

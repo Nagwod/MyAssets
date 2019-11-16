@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rachado : MonoBehaviour
 {
-    private Vector3 posinic;
+    [SerializeField] private Vector3 posinic;
 
     private void OnCollisionEnter(Collision collision)
     {

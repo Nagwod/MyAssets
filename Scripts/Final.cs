@@ -5,12 +5,8 @@ using UnityEngine;
 public class Final : MonoBehaviour
 {
     GameControl gameControl; //Variável do tipo gamecontrol, para acessar os métodos de lá 
-    //public int fase;
-    //public int moedas;
-    //public int tempo;
     private AudioSource source;
-    public GameObject TelaFinal, TelaPrincipal;
-    //public float pontosm, pontost, pontos;
+    [SerializeField] private GameObject TelaFinal, TelaPrincipal;
 
     private void OnCollisionEnter(Collision collision)
     {

@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class ConfigGeral : MonoBehaviour
 {
     GameControl gameControl;
-    public Text tmoedas, ttempo; //Campos de texto que aparecem na tela durante a fase
+    [SerializeField] private Text tmoedas, ttempo; //Campos de texto que aparecem na tela durante a fase
+    [SerializeField] private int fase; //Para setar a fase através da interface do unity
     static public int moedas; //Dados a serem coletados durantre o jogo
     static public int gravcont;
     static public float tempo, gravMedia, gravsoma; //Dados a serem coletados durantre o jogo
-    public int fase; //Para setar a fase através da interface do unity
     static public int faseAtual; //Fase que está sendo jogada
     static public int mortes, mortesBuraco, mortesEspinho, mortesParedes, mortesQueda, batidasParedes, batidasArvores; //Dados a serem coletados durantre o jogo
     //, pontos;

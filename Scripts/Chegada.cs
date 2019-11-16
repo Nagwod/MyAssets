@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Chegada : MonoBehaviour
 {
-    public ParticleSystem p1, p2;
+    [SerializeField] private ParticleSystem p1, p2;
+    [SerializeField] private AudioSource a1, a2;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -12,6 +13,8 @@ public class Chegada : MonoBehaviour
         {
             var em1 = p1.emission;
             var em2 = p2.emission;
+            a1.Play();
+            a2.Play();
             em1.rateOverTime = 50;
             em2.rateOverTime = 50;
             Destroy(this);

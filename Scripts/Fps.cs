@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Fps : MonoBehaviour
 {
-    public Text fpsText;
-    public float deltaTime;
+    [SerializeField] private Text fpsText;
+    [SerializeField] private float deltaTime;
 
     // Start is called before the first frame update
     void Start()
