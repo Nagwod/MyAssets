@@ -112,14 +112,7 @@ public class MenuControl : MonoBehaviour
         if (gameControl.Autenticar()) //Faz a autenticação
         {
             gameControl.CarregarAdmin();
-            foreach (string save in gameControl.GetSaves()) //percorre todos os saves
-            {
-                GameObject go = Instantiate(prefabBotao) as GameObject; //Instancia o botão prefab para cada jogador (na tela de jogador)
-                go.transform.SetParent(content); //Coloca o botão no campo de rolagem (na tela de admin)
-                go.GetComponentInChildren<Text>().text = save; //Coloca o nome do jogador no texto do botão
-                botoesSaves.Add(go.GetComponent<Button>()); //Coloca o botão na lista
-                                                            //go.GetComponent<Button>().onClick.AddListener(() => LogarJogador(save));
-            }
+            CarregaBotoes();
             loginAdm.SetActive(false); //Troca de tela
             loginJogador.SetActive(true); //Troca de tela
             nomeAdminPainel.text = gameControl.GetNomeAdmin();
@@ -230,6 +223,17 @@ public class MenuControl : MonoBehaviour
     public void Logout()
     {
         gameControl.logado = false;
+    }
+
+    public void CarregaBotoes() //Carrega os botões dos jogadores
+    {
+        foreach (string save in gameControl.GetSaves()) //percorre todos os saves
+        {
+            GameObject go = Instantiate(prefabBotao) as GameObject; //Instancia o botão prefab para cada jogador (na tela de jogador)
+            go.transform.SetParent(content); //Coloca o botão no campo de rolagem (na tela de admin)
+            go.GetComponentInChildren<Text>().text = save; //Coloca o nome do jogador no texto do botão
+            botoesSaves.Add(go.GetComponent<Button>()); //Coloca o botão na lista
+        }
     }
 
     public void CriaBotao() //Cria o botão correspondente ao novo jogador criado

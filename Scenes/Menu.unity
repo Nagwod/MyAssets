@@ -803,8 +803,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 740.87994, y: -269.56802}
-  m_SizeDelta: {x: 1361.7599, y: 171.04535}
+  m_AnchoredPosition: {x: 329.28003, y: -119.80801}
+  m_SizeDelta: {x: 538.56006, y: 71.20534}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &78817785
 MonoBehaviour:
@@ -9836,30 +9836,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28938de23bd5a6844b02cd6c2b73f47b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logado: 0
   filePath: 
   fileAdm: 
-  nomeAdmin: 
-  senhaAdmin: 
-  emailAdmin: 
-  saves: []
-  nomeJogador: 
-  idadeJogador: 
-  faseCompleta: 00000000000000000000000000000000
-  moedas: 00000000000000000000000000000000
-  tempo: 00000000000000000000000000000000
-  velocMedia:
-  - 0
-  - 0
-  - 0
-  - 0
-  mortes: 00000000000000000000000000000000
-  mortesEspinho: 00000000000000000000000000000000
-  mortesParede: 00000000000000000000000000000000
-  mortesBuraco: 00000000000000000000000000000000
-  mortesQueda: 00000000000000000000000000000000
-  batidasParede: 00000000000000000000000000000000
-  batidasArvore: 00000000000000000000000000000000
+  logado: 0
   mediaMoedas:
   - 0
   - 0
@@ -10039,8 +10018,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 740.87994, y: -93.522675}
-  m_SizeDelta: {x: 1361.7599, y: 171.04535}
+  m_AnchoredPosition: {x: 329.28003, y: -43.60267}
+  m_SizeDelta: {x: 538.56006, y: 71.20534}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &942650255
 MonoBehaviour:
@@ -11024,7 +11003,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a0dfd5a5d78d754cb8f6c11eb51a713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fase: 0
   botoes:
   - {fileID: 1341565795}
   - {fileID: 567104607}
@@ -17257,6 +17235,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1028209470}
+        m_MethodName: CarregaBotoes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1574147654
@@ -19211,8 +19200,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 740.87994, y: -445.61337}
-  m_SizeDelta: {x: 1361.7599, y: 171.04535}
+  m_AnchoredPosition: {x: 329.28003, y: -196.01334}
+  m_SizeDelta: {x: 538.56006, y: 71.20534}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1719206071
 MonoBehaviour:
