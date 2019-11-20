@@ -19,7 +19,7 @@ public class Esmaga : MonoBehaviour
         if (collision.transform.CompareTag("Player") && fechando)
         {
             source.Play(); //Toca o som
-            if (Tatu.podeMover)
+            if (Tatu.vivo)
             {
                 StartCoroutine(Delay());
             }
@@ -31,11 +31,13 @@ public class Esmaga : MonoBehaviour
         Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
         trail.emitting = false;
         Tatu.podeMover = false;
+        Tatu.vivo = false;
         player.transform.localScale = new Vector3(1, 1, 0.01f);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.8f);
         player.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
         player.velocity = new Vector3(0, 0, 0); //Para o tatu
         player.transform.position = t.checkpoint; //Manda o tatu pro checkpoint
+        Tatu.vivo = true;
         ConfigGeral.mortesParedes++;
         ConfigGeral.mortes++;
     }

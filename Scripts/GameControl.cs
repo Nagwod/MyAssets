@@ -136,7 +136,7 @@ public class GameControl : MonoBehaviour
             bf.Serialize(file, save); //Guarda os valores de "save" no arquivo
             file.Close(); //Fecha o arquivo
             CarregarAdmin(); //Carrega o admin para adicionar o novo jogador
-            saves.Add(nomeJogador); //Adciona o novo jogador na lista
+            saves.Add(nomeAdmin + nomeJogador); //Adciona o novo jogador na lista
             AlterarSaves(); //Salva o novo jogador em admin
         }
     }
@@ -168,12 +168,12 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    public void Carregar() //Carrega os dados do jogador do arquivo do jogador para o jogo
+    public void Carregar(string nomeArquivo) //Carrega os dados do jogador do arquivo do jogador para o jogo
     {
-        if (File.Exists(filePath + nomeAdmin + nomeJogador + ".dat"))
+        if (File.Exists(filePath + nomeArquivo + ".dat"))
         {
             BinaryFormatter bf = new BinaryFormatter();  //Variável para converter um arquivo para binário
-            FileStream file = File.Open(filePath + nomeAdmin + nomeJogador + ".dat", FileMode.Open); //Abre o arquivo
+            FileStream file = File.Open(filePath + nomeArquivo + ".dat", FileMode.Open); //Abre o arquivo
             Save save = (Save)bf.Deserialize(file); //Instancia um novo "save" e carrega os dados guardados no arquivo para ele
             file.Close(); //Fecha o arquivo
             nomeJogador = save.nome; //Passa os dados carregados
@@ -214,7 +214,7 @@ public class GameControl : MonoBehaviour
     {
         File.Delete(filePath + nomeAdmin + nomeJogador + ".dat"); //Deleta o arquivo do jogador
         CarregarAdmin(); //Carrega o admin para remover o jogador
-        saves.Remove(nomeJogador); //Remove o jogador da lista
+        saves.Remove(nomeAdmin + nomeJogador); //Remove o jogador da lista
         AlterarSaves(); //Devolve a lista sem o jogador excluido
         Limpar();
     }
@@ -274,7 +274,7 @@ public class GameControl : MonoBehaviour
         {
             if (File.Exists(filePath + i + ".dat"))
             {
-                File.Delete(filePath + nomeAdmin + nomeJogador + ".dat"); //Deleta o arquivo do jogador
+                File.Delete(filePath + i + ".dat"); //Deleta o arquivo do jogador
             }
         }
         if (File.Exists(fileAdm + nomeAdmin + ".dat"))
@@ -370,10 +370,10 @@ public class GameControl : MonoBehaviour
         int[] cont = new int[4];
         foreach(string i in s)
         {
-            if (File.Exists(filePath + nomeAdmin + i + ".dat"))
+            if (File.Exists(filePath + i + ".dat"))
             {
                 BinaryFormatter bf = new BinaryFormatter();  //Variável para converter um arquivo para binário
-                FileStream file = File.Open(filePath+ nomeAdmin + i + ".dat", FileMode.Open); //Abre o arquivo
+                FileStream file = File.Open(filePath+ i + ".dat", FileMode.Open); //Abre o arquivo
                 Save save = (Save)bf.Deserialize(file); //Instancia um novo "save" e carrega os dados guardados no arquivo para ele
                 file.Close(); //Fecha o arquivo
                 for (int j=0;j<=3;j++)
@@ -417,6 +417,10 @@ public class GameControl : MonoBehaviour
     public List<string> GetSaves()
     {
         return saves; //Retorna a lista de saves
+    }
+    public void SetSaves(List<string> s)
+    {
+        saves = s;
     }
     //Seta os resultados da fase para serem salvos
     public void SetResultados(int fase, int moedas, int tempo, float velocMedia, int mortes, int mortesBuraco, int mortesEspinho, int mortesParede, int mortesQueda, int batidasParede, int batidasArvore)

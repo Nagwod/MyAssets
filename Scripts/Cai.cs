@@ -12,7 +12,7 @@ public class Cai : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && Tatu.podeMover)
+        if (other.CompareTag("Player") && Tatu.vivo)
         {
             if (buraco) //Verifica se é buraco ou não
             {
@@ -32,6 +32,7 @@ public class Cai : MonoBehaviour
         tatu.velocity = new Vector3(0, -2, 0);
         tatu.transform.position = new Vector3(transform.position.x, transform.position.y+1, transform.position.z);
         Tatu.podeMover = false;
+        Tatu.vivo = false;
         yield return new WaitForSeconds(0.1f);
         source.Play(0);
         tatu.velocity = new Vector3(1, tatu.velocity.y, 1);
@@ -46,6 +47,7 @@ public class Cai : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         tatu.velocity = new Vector3(0, 0, 0);
         tatu.transform.position = t.checkpoint;
+        Tatu.vivo = true;
         ConfigGeral.mortesBuraco++;
         ConfigGeral.mortes++;
     }
@@ -54,6 +56,7 @@ public class Cai : MonoBehaviour
     {
         source.Play(0);
         Tatu.podeMover = false;
+        Tatu.vivo = false;
         yield return new WaitForSeconds(1);
         trail.emitting = false;
         yield return new WaitForSeconds(0.2f);
@@ -61,6 +64,7 @@ public class Cai : MonoBehaviour
         Tatu.podeMover = false;
         tatu.velocity = new Vector3(0, 0, 0);
         tatu.transform.position = t.checkpoint;
+        Tatu.vivo = true;
         ConfigGeral.mortesQueda++;
         ConfigGeral.mortes++;
     }

@@ -16,7 +16,7 @@ public class Chave : MonoBehaviour
             var em = ps.emission;
             em.rateOverTime = 30;
             Destroy(portao); //Deleta o portão
-            transform.position = new Vector3(transform.position.x, transform.position.y-5, transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y-100, transform.position.z);
             StartCoroutine(Delay());
         }
     }

@@ -19,7 +19,7 @@ public class Final : MonoBehaviour
     private void CalculaResultados()
     {
         ConfigGeral.gravMedia = ConfigGeral.gravsoma / ConfigGeral.gravcont;
-        gameControl.Carregar(); //Carrega o save do jogador
+        gameControl.Carregar(gameControl.GetNomeAdmin() + gameControl.GetNomeJogador()); //Carrega o save do jogador
         if (gameControl.GetFaseCompleta(ConfigGeral.faseAtual-1)<2) //Verifica se a fase jogada era a última fase liberada
         {
             gameControl.SetFaseCompleta(ConfigGeral.faseAtual-1, 2); //Libera a próxima fase

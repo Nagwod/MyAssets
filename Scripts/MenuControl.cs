@@ -11,7 +11,7 @@ public class MenuControl : MonoBehaviour
     [SerializeField] private Button[] botoes2; //Botões para acessar os resultados das fases
     [SerializeField] private InputField nomeJogador, idadeJogador, nomeAdmCriar, emailAdmCriar, senhaAdmCriar, nomeAdmLogin, senhaAdmLogin, emailAdmAlterar, senhaAdmAlterar; //Campos de texto do login do admin e do cirar admin
     [SerializeField] private GameObject criarAdm, menu, loginAdm, alterarAdmin, criarJogador, loginJogador, selecaoFases, dadosJogador, avisoExclusao;
-    [SerializeField] private GameObject erroCriarAdm, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm; //Vários objetos das telas do menu
+    [SerializeField] private GameObject erroCriarAdm, erroCriarAdm2, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm; //Vários objetos das telas do menu
     [SerializeField] private GameObject prefabBotao; //Botão prefab para os jogadores que forem criados
     [SerializeField] private Transform content;//O campo de rolagem que tem os botões dos jogadores criados
     [SerializeField] private Text nomeAdminAlterar, emailAdminAlterar, nomeAdminPainel, nomeIdadeDados, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
@@ -44,7 +44,7 @@ public class MenuControl : MonoBehaviour
 
     public void AcessarDadosJogador() //Método para acessar a tela de dados do jogador
     {
-        gameControl.Carregar(); //Carrega o jogador
+        gameControl.Carregar(gameControl.GetNomeAdmin()+gameControl.GetNomeJogador()); //Carrega o jogador
         dadosJogador.SetActive(true); //Troca de tela
         menu.SetActive(false); //Troca de tela
         foreach(Button b in botoes2)
@@ -82,7 +82,7 @@ public class MenuControl : MonoBehaviour
     public void LogarJogador(string nomeJogador) //Método para entrar na tela de fases para jogar
     {
         gameControl.SetNomeJogador(nomeJogador);  //Seta o nome do jogador para acessar seus dados
-        gameControl.Carregar();  //Carrega o jogador
+        gameControl.Carregar(gameControl.GetNomeAdmin() + gameControl.GetNomeJogador());  //Carrega o jogador
         menu.SetActive(true); //Troca de tela
         loginJogador.SetActive(false); //Troca de tela
     }
@@ -91,18 +91,28 @@ public class MenuControl : MonoBehaviour
     {
         if (nomeAdmCriar.text.Equals("") || emailAdmCriar.text.Equals("") || senhaAdmCriar.text.Equals("")) //Se nenhum dos campos for vazio, ele permite que seja criado
         {
+            erroCriarAdm2.SetActive(false);
             erroCriarAdm.SetActive(true); //Se um dos campos for vazio, exibe a mensagem de erro na tela
         }
         else
         {
-            gameControl.SetNomeAdmin(nomeAdmCriar.text); //Seta o nome do admin para criá-lo
-            gameControl.SetEmailAdmin(emailAdmCriar.text); //Seta o nome do admin para criá-lo
-            gameControl.SetSenhaAdmin(senhaAdmCriar.text); //Seta a senha do admin para criá-lo
-            gameControl.CriarAdmin(); //Cria o admin
-            criarAdm.SetActive(false); //Troca de tela
-            loginAdm.SetActive(true); //Troca de tela
-            ApagaErros(); //Apaga as mensagens de erros das telas
-            ApagaTextos(); //Apaga os campos de texto
+            if (!gameControl.VerificaAdmin())
+            {
+                gameControl.SetNomeAdmin(nomeAdmCriar.text); //Seta o nome do admin para criá-lo
+                gameControl.SetEmailAdmin(emailAdmCriar.text); //Seta o nome do admin para criá-lo
+                gameControl.SetSenhaAdmin(senhaAdmCriar.text); //Seta a senha do admin para criá-lo
+                gameControl.SetSaves(new List<string>());
+                gameControl.CriarAdmin(); //Cria o admin
+                criarAdm.SetActive(false); //Troca de tela
+                loginAdm.SetActive(true); //Troca de tela
+                ApagaErros(); //Apaga as mensagens de erros das telas
+                ApagaTextos(); //Apaga os campos de texto
+            }
+            else
+            {
+                erroCriarAdm.SetActive(false);
+                erroCriarAdm2.SetActive(true); //Se já existir um adm com o mesmo nome, exibe a mensagem de texto na tela
+            }
         }
     }
     public void LoginAdm() //Método para entrar na página de admin
@@ -152,11 +162,6 @@ public class MenuControl : MonoBehaviour
     public void ExcluirAdm() //Método que chama o método de excluir o admin
     {
         gameControl.ExcluirAdmin(); //Apaga o admin
-        avisoExclusao.SetActive(false); //Fecha a tela de aviso de exclusão
-        alterarAdmin.SetActive(false); //Fecha a tela de alterar dados do admin
-        loginAdm.SetActive(true); //Abre a tela de login
-        ApagaErros();
-        ApagaTextos();
     }
 
     public void CriaJogador() //Método que chama o método que cria o jogador
@@ -165,17 +170,15 @@ public class MenuControl : MonoBehaviour
         gameControl.SetIdadeJogador(idadeJogador.text); //Seta a idade do jogador
         if (nomeJogador.text == "" || idadeJogador.text == "") //Verifica se um dos campos está vazio
         {
+            ApagaErros(); //Esconde as outras mensagens de erro
             erroCriarJogador.SetActive(true); //Exibe a mensagem de erro avisando que um dos campos está vazio
-            erroCriarJogador2.SetActive(false); //Esconde as outras mensagens de erro
-            erroCriarJogador3.SetActive(false); //Esconde as outras mensagens de erro
         }
         else
         {
             if (idadeJogador.text.Contains("-")) //Se a idade for negativa
             {
+                ApagaErros(); //Esconde as outras mensagens de erro
                 erroCriarJogador3.SetActive(true); //Exibe a mensagem de erro avisando que a idade não pode ser negativa
-                erroCriarJogador.SetActive(false); //Esconde as outras mensagens de erro
-                erroCriarJogador2.SetActive(false); //Esconde as outras mensagens de erro
             }
             else
             {
@@ -186,12 +189,13 @@ public class MenuControl : MonoBehaviour
                     CriaBotao(); //Cria um botão para acessar o jogador
                     criarJogador.SetActive(false);
                     loginJogador.SetActive(true);
+                    ApagaErros();
+                    ApagaTextos();
                 }
                 else
                 {
+                    ApagaErros(); //Esconde as outras mensagens de erro
                     erroCriarJogador2.SetActive(true); //Exibe a mensagem de erro avisando que já existe um jogador com o mesmo nome
-                    erroCriarJogador.SetActive(false); //Esconde as outras mensagens de erro
-                    erroCriarJogador3.SetActive(false); //Esconde as outras mensagens de erro
                 }
             }
         }
@@ -229,9 +233,11 @@ public class MenuControl : MonoBehaviour
     {
         foreach (string save in gameControl.GetSaves()) //percorre todos os saves
         {
+            gameControl.Carregar(save);
+            ExcluiBotao();
             GameObject go = Instantiate(prefabBotao) as GameObject; //Instancia o botão prefab para cada jogador (na tela de jogador)
             go.transform.SetParent(content); //Coloca o botão no campo de rolagem (na tela de admin)
-            go.GetComponentInChildren<Text>().text = save; //Coloca o nome do jogador no texto do botão
+            go.GetComponentInChildren<Text>().text = gameControl.GetNomeJogador(); //Coloca o nome do jogador no texto do botão
             botoesSaves.Add(go.GetComponent<Button>()); //Coloca o botão na lista
         }
     }
@@ -277,63 +283,6 @@ public class MenuControl : MonoBehaviour
         avisoExclusao.SetActive(false); //Fecha a tela de aviso de exclusão
         dadosJogador.SetActive(false); //Fecha a tela de dados do jogador
         loginJogador.SetActive(true); //Abre a tela de admin
-    }
-
-    public void SetSaveText()
-    {
-        tsave1.text = gameControl.FileToString(1);
-        tsave2.text = gameControl.FileToString(2);
-        tsave3.text = gameControl.FileToString(3);
-    }
-
-    public void SetPontosText()
-    {
-        tpontuacao.text = gameControl.PontuacaoToString(fase);
-        tpontos.text = gameControl.PontosToString(fase);
-    }
-    public void Apagar()
-    {
-        gameControl.Apagar();
-    }
-
-    public void SetSave(int save)
-    {
-        gameControl.SetSave(save);
-    }
-    
-    public void SetFase(int fase)
-    {
-        this.fase = fase;
-    }
-
-    public void AtivaBotoes()
-    {
-        for (int i = 0; i < botoes.Length; i++)
-        {
-            if (gameControl.GetFasesCompletas() >= i)
-            {
-                botoes[i].interactable = true;
-            }
-            else
-            {
-                botoes[i].interactable = false;
-            }
-        }
-    }
-
-    public void AtivaBotoes2()
-    {
-        for (int i = 0; i < botoes2.Length; i++)
-        {
-            if (gameControl.GetFasesCompletas() > i)
-            {
-                botoes2[i].interactable = true;
-            }
-            else
-            {
-                botoes2[i].interactable = false;
-            }
-        }
     }
     */
 

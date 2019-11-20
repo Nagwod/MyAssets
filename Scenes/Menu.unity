@@ -3003,7 +3003,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 2, y: 1}
   m_AnchoredPosition: {x: 0.000010251999, y: 0}
-  m_SizeDelta: {x: -3076.8794, y: 0}
+  m_SizeDelta: {x: -1195.28, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &276973769
 MonoBehaviour:
@@ -5149,6 +5149,7 @@ RectTransform:
   - {fileID: 334732803}
   - {fileID: 1185067985}
   - {fileID: 601627747}
+  - {fileID: 425952666}
   m_Father: {fileID: 2138507922}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5276,6 +5277,85 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &425952665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 425952666}
+  - component: {fileID: 425952668}
+  - component: {fileID: 425952667}
+  m_Layer: 5
+  m_Name: ErroCadastro2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &425952666
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425952665}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 408736409}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.2, y: 0.22}
+  m_AnchorMax: {x: 0.8, y: 0.28}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &425952667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425952665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.8}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 80
+    m_Alignment: 4
+    m_AlignByGeometry: 1
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "Erro: J\xE1 existe um perfil com este nome"
+--- !u!222 &425952668
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425952665}
+  m_CullTransparentMesh: 0
 --- !u!1 &441529240
 GameObject:
   m_ObjectHideFlags: 0
@@ -7162,7 +7242,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Preencha os campos corretamente
+  m_Text: 'Erro: Preencha os campos corretamente'
 --- !u!222 &601627749
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7399,7 +7479,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dados incorretos
+  m_Text: 'Erro: Dados incorretos'
 --- !u!222 &637736707
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8460,6 +8540,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1028209470}
+        m_MethodName: Logout
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1028209469}
+        m_MethodName: Reiniciar
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &808700194
@@ -8796,7 +8898,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Falha ao enviar o e-mail
+  m_Text: 'Erro: Falha ao enviar o e-mail'
 --- !u!222 &818761894
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10726,7 +10828,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Preencha os campos corretamente
+  m_Text: 'Erro: Preencha os campos corretamente'
 --- !u!222 &1016761682
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11032,6 +11134,7 @@ MonoBehaviour:
   dadosJogador: {fileID: 681921426}
   avisoExclusao: {fileID: 1066380336}
   erroCriarAdm: {fileID: 601627746}
+  erroCriarAdm2: {fileID: 425952665}
   erroLoginAdm: {fileID: 637736704}
   erroCriarJogador: {fileID: 1608333387}
   erroCriarJogador2: {fileID: 582939205}
@@ -11599,8 +11702,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 155, y: -254.01602}
-  m_SizeDelta: {x: 250, y: 448.03204}
+  m_AnchoredPosition: {x: 155, y: -112.895996}
+  m_SizeDelta: {x: 250, y: 165.79199}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1092818077
 MonoBehaviour:
@@ -18048,7 +18151,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dados incorretos
+  m_Text: 'Erro: Dados incorretos'
 --- !u!222 &1635647618
 CanvasRenderer:
   m_ObjectHideFlags: 0

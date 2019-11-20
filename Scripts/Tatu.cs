@@ -14,7 +14,7 @@ public class Tatu : MonoBehaviour
     [SerializeField] private Vector3 velocidade;
     [SerializeField] private int altcam, altMinimapa, altMarcador;
     public Vector3 checkpoint;
-    static public bool podeMover;
+    static public bool podeMover, vivo;
     private AudioSource source;
     private readonly int andar = 20, correr = 25;
     private readonly float max = 0.6f;
@@ -30,7 +30,7 @@ public class Tatu : MonoBehaviour
         {
             ConfigGeral.batidasArvores++;
         }
-        if (collision.transform.CompareTag("Chao"))
+        if (collision.transform.CompareTag("Chao") && vivo)
         {
                 podeMover = true;
                 trail.emitting = true;
@@ -48,6 +48,7 @@ public class Tatu : MonoBehaviour
         Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
         checkpoint = new Vector3(0, 5, 0);
         podeMover = false;
+        vivo = true;
         source = GetComponent<AudioSource>();
     }
 
