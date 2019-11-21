@@ -34,15 +34,18 @@ public class ConfigGeral : MonoBehaviour
         faseAtual = fase; //Recebe a fase
         gravsoma = 0;
         gravcont = 0;
-        StartCoroutine(AutoSave());
+        if (gameControl.GetFaseCompleta(faseAtual - 1) < 2) //Verifica se a fase não foi completa
+        {
+            StartCoroutine(AutoSave());
+        }
     }
 
     IEnumerator AutoSave()
     {
         yield return new WaitForSeconds(5);
-        if (gameControl.GetFaseCompleta(faseAtual - 1) < 1) //Verifica se a fase jogada era a última fase liberada
+        if (gameControl.GetFaseCompleta(faseAtual - 1) < 1) //Verifica se a fase não foi jogada ainda
         {
-            gameControl.SetFaseCompleta(faseAtual-1, 1);
+            gameControl.SetFaseCompleta(faseAtual - 1, 1);
         }
         gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
             faseAtual - 1,
@@ -73,6 +76,7 @@ public class ConfigGeral : MonoBehaviour
             gravsoma += Mathf.Abs(Physics.gravity.z);
         }
         gravcont += 1;
+        gravMedia = gravsoma/gravcont;
         ttempo.text = "Tempo: " + (System.Math.Floor(tempo)); //Tempo arredondado é passado pro campo de texto
         tmoedas.text = "Moedas: "+moedas; //Quantidade de moedas é passada para o campo de texto
         //tmortes.text = "Total:" + mortes + " Buracos:" + mortesBuraco + " Espinhos:" + mortesEspinho + " Esmagado:" + mortesParedes + " Quedas:" + mortesQueda + " Batidas Arvore:" + batidasArvores + " Paredes:" + batidasParedes;

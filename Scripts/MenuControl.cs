@@ -295,7 +295,7 @@ public class MenuControl : MonoBehaviour
         {
             loginAdm.SetActive(false); //Se já existe, ele fecha a tela de admin
             menu.SetActive(true); //e abre o menu
+            gameControl.CarregarAdmin(); //Carrega o admin (se existir)
         }
-        gameControl.CarregarAdmin(); //Carrega o admin (se existir)
     }
 }
