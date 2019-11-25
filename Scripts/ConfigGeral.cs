@@ -47,20 +47,24 @@ public class ConfigGeral : MonoBehaviour
         {
             gameControl.SetFaseCompleta(faseAtual - 1, 1);
         }
-        gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
-            faseAtual - 1,
-            moedas,
-            (int)System.Math.Floor(tempo),
-            gravMedia,
-            mortes,
-            mortesBuraco,
-            mortesEspinho,
-            mortesParedes,
-            mortesQueda,
-            batidasParedes,
-            batidasArvores
-        );
-        gameControl.Salvar();
+        if (gameControl.GetTempos(faseAtual - 1) <= System.Math.Floor(tempo))
+        {
+            gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
+                faseAtual - 1,
+                moedas,
+                (int)System.Math.Floor(tempo),
+                gravMedia,
+                mortes,
+                mortesBuraco,
+                mortesEspinho,
+                mortesParedes,
+                mortesQueda,
+                batidasParedes,
+                batidasArvores
+            );
+            gameControl.SendSaveToDatabase();
+        }
+        StartCoroutine(AutoSave());
     }
 
     // Update is called once per frame

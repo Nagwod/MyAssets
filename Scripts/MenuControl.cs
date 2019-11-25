@@ -7,11 +7,12 @@ public class MenuControl : MonoBehaviour
 {
     GameControl gameControl; //Variável do tipo gamecontrol, para acessar os métodos de lá
     private int fase; //Variável para saber de qual fase os dados serão exibidos na tela de resultados das fases
+    private bool botoesCarregados;
     [SerializeField] private Button[] botoes; //Botões para entrar nas fases
     [SerializeField] private Button[] botoes2; //Botões para acessar os resultados das fases
     [SerializeField] private InputField nomeJogador, idadeJogador, nomeAdmCriar, emailAdmCriar, senhaAdmCriar, nomeAdmLogin, senhaAdmLogin, emailAdmAlterar, senhaAdmAlterar; //Campos de texto do login do admin e do cirar admin
     [SerializeField] private GameObject criarAdm, menu, loginAdm, alterarAdmin, criarJogador, loginJogador, selecaoFases, dadosJogador, avisoExclusao;
-    [SerializeField] private GameObject erroCriarAdm, erroCriarAdm2, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm; //Vários objetos das telas do menu
+    [SerializeField] private GameObject erroCriarAdm, erroCriarAdm2, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm, carregando; //Vários objetos das telas do menu
     [SerializeField] private GameObject prefabBotao; //Botão prefab para os jogadores que forem criados
     [SerializeField] private Transform content;//O campo de rolagem que tem os botões dos jogadores criados
     [SerializeField] private Text nomeAdminAlterar, emailAdminAlterar, nomeAdminPainel, nomeIdadeDados, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
@@ -19,18 +20,18 @@ public class MenuControl : MonoBehaviour
 
     public void ExibirDados() //Método para exibir os resultados das fases na tela
     {
-        if (gameControl.GetIdadeJogaor()=="1") //Se a idade for igual a 1, exibe "ano" ao invés de "anos"
+        if (gameControl.GetIdadeJogador() == "1") //Se a idade for igual a 1, exibe "ano" ao invés de "anos"
         {
-            nomeIdadeDados.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " ano"; //Na tela de resultados
+            nomeIdadeDados.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogador() + " ano"; //Na tela de resultados
             //nomeIdadeExclusao.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " ano"; //Na tela aviso de exclusão
         }
         else
         {
-            nomeIdadeDados.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " anos"; //Na tela de resultados
+            nomeIdadeDados.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogador() + " anos"; //Na tela de resultados
             //nomeIdadeExclusao.text = gameControl.GetNomeJogador() + ", " + gameControl.GetIdadeJogaor() + " anos"; //Na tela aviso de exclusão
         }
         faseDados.text = "Fase " + fase + ":";
-        moedasDados.text = "Moedas: " + gameControl.GetMoedas(fase - 1) + " (média: " + gameControl.mediaMoedas[fase-1].ToString("F") + ")";
+        moedasDados.text = "Moedas: " + gameControl.GetMoedas(fase - 1) + " (média: " + gameControl.mediaMoedas[fase - 1].ToString("F") + ")";
         tempoDados.text = "Tempo: " + gameControl.GetTempos(fase - 1) + " (média: " + gameControl.mediaTempos[fase - 1].ToString("F") + ")";
         velocMedDados.text = "Velocidade média: " + gameControl.GetVelocMedia(fase - 1).ToString("F") + " (média: " + gameControl.mediaVeloc[fase - 1].ToString("F") + ")" + " (Máx 15)";
         mortesDados.text = "Total de mortes: " + gameControl.GetMortes(fase - 1) + " (média: " + gameControl.mediaMortes[fase - 1] + ")";
@@ -44,22 +45,21 @@ public class MenuControl : MonoBehaviour
 
     public void AcessarDadosJogador() //Método para acessar a tela de dados do jogador
     {
-        gameControl.Carregar(gameControl.GetNomeAdmin()+gameControl.GetNomeJogador()); //Carrega o jogador
+        gameControl.RetreiveSaveData(gameControl.GetNomeAdmin() + "/" + gameControl.GetNomeJogador()); //Carrega o jogador
         dadosJogador.SetActive(true); //Troca de tela
         menu.SetActive(false); //Troca de tela
-        foreach(Button b in botoes2)
+        foreach (Button b in botoes2)
         {
             b.interactable = false; //Desativa os botões de fase
         }
-        for (int i = 0; i <=3; i++)
+        for (int i = 0; i <= 3; i++)
         {
-            if (gameControl.GetFaseCompleta(i)>0)
+            if (gameControl.GetFaseCompleta(i) > 0)
             {
                 botoes2[i].interactable = true; //Ativa os botões das fases jogadas
             }
         }
         fase = 1; //Para entrar sem nenhuma fase selecionada
-        gameControl.MediaSaves();
         ExibirDados(); //Para exibir os dados na tela
     }
 
@@ -72,7 +72,7 @@ public class MenuControl : MonoBehaviour
         botoes[0].interactable = true;
         for (int i = 1; i <= 3; i++)
         {
-            if (gameControl.GetFaseCompleta(i-1)>1)
+            if (gameControl.GetFaseCompleta(i - 1) > 1)
             {
                 botoes[i].interactable = true; //Ativa os botões das fases liberadas
             }
@@ -81,10 +81,21 @@ public class MenuControl : MonoBehaviour
 
     public void LogarJogador(string nomeJogador) //Método para entrar na tela de fases para jogar
     {
-        gameControl.SetNomeJogador(nomeJogador);  //Seta o nome do jogador para acessar seus dados
-        gameControl.Carregar(gameControl.GetNomeAdmin() + gameControl.GetNomeJogador());  //Carrega o jogador
+        gameControl.SetNomeJogador("");  //Seta o nome do jogador para acessar seus dados
+        gameControl.RetreiveSaveData(gameControl.GetNomeAdmin() + "/" + nomeJogador); //Carrega o jogador
+        StartCoroutine(DatabaseDelay2(nomeJogador));
+    }
+
+    IEnumerator DatabaseDelay2(string nome)
+    {
+        loginJogador.SetActive(false);
+        while (nome!= gameControl.GetNomeJogador())
+        {
+            carregando.SetActive(true); //Aparece a tela de carregamento
+            yield return new WaitForSeconds(0.1f);
+        }
+        carregando.SetActive(false);
         menu.SetActive(true); //Troca de tela
-        loginJogador.SetActive(false); //Troca de tela
     }
 
     public void CriaAdm() //Método para chamar o método de criar o admin
@@ -122,6 +133,7 @@ public class MenuControl : MonoBehaviour
         if (gameControl.Autenticar()) //Faz a autenticação
         {
             gameControl.CarregarAdmin();
+            gameControl.MediaSaves();
             CarregaBotoes();
             loginAdm.SetActive(false); //Troca de tela
             loginJogador.SetActive(true); //Troca de tela
@@ -129,6 +141,7 @@ public class MenuControl : MonoBehaviour
             ApagaErros(); //Apaga as mensagens de erros das telas
             ApagaTextos(); //Apaga os campos de texto
             gameControl.logado = true;
+            botoesCarregados = true;
         }
         else
         {
@@ -231,14 +244,38 @@ public class MenuControl : MonoBehaviour
 
     public void CarregaBotoes() //Carrega os botões dos jogadores
     {
+        if (!botoesCarregados)
+        {
+            for (int i = 0; i <= botoesSaves.Capacity; i++)
+            {
+                ExcluiBotao();
+            }
+            StartCoroutine(DatabaseDelay());
+        }
+    }
+
+    IEnumerator DatabaseDelay()
+    {
+        string nomeant;
         foreach (string save in gameControl.GetSaves()) //percorre todos os saves
         {
-            gameControl.Carregar(save);
-            ExcluiBotao();
+            nomeant = gameControl.nomeDB;
+            gameControl.GetNomeDB(save);
+            while (gameControl.nomeDB == nomeant)
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
             GameObject go = Instantiate(prefabBotao) as GameObject; //Instancia o botão prefab para cada jogador (na tela de jogador)
             go.transform.SetParent(content); //Coloca o botão no campo de rolagem (na tela de admin)
-            go.GetComponentInChildren<Text>().text = gameControl.GetNomeJogador(); //Coloca o nome do jogador no texto do botão
+            go.GetComponentInChildren<Text>().text = gameControl.nomeDB; //Coloca o nome do jogador no texto do botão
             botoesSaves.Add(go.GetComponent<Button>()); //Coloca o botão na lista
+        }
+        foreach (Button b in botoesSaves) //Percorre todos os botões da lista
+        {
+            if (b.GetComponentInChildren<Text>().text == "") //Verifica se o texto do botão corresponde ao nome do jogador (na tela de jogador)
+            {
+                Destroy(b.gameObject); //Destrói o botão
+            }
         }
     }
 
@@ -254,11 +291,11 @@ public class MenuControl : MonoBehaviour
     {
         foreach (Button b in botoesSaves) //Percorre todos os botões da lista
         {
-            if (b.GetComponentInChildren<Text>().text.Equals(gameControl.GetNomeJogador())) //Verifica se o texto do botão corresponde ao nome do jogador (na tela de jogador)
+            if (b.GetComponentInChildren<Text>().text != "Criar Novo Jogador") //Verifica se o texto do botão corresponde ao nome do jogador (na tela de jogador)
             {
                 Destroy(b.gameObject); //Destrói o botão
                 botoesSaves.Remove(b); //Remove o botão da lista
-                break; //Sai do laço para não gerar erro, pois houve uma remoção na lista
+                break;
             }
         }
     }
@@ -273,6 +310,11 @@ public class MenuControl : MonoBehaviour
     {
         nomeAdminAlterar.text = "Nome: " + gameControl.GetNomeAdmin();
         emailAdminAlterar.text = "E-mail: " + gameControl.GetEmailAdmin();
+    }
+
+    public void BotoesCarregadosTrue()
+    {
+        botoesCarregados = true;
     }
 
     /*
@@ -290,6 +332,7 @@ public class MenuControl : MonoBehaviour
     void Start()
     {
         gameControl = GameControl.gameControl; //Seta o gameControl
+        botoesCarregados = false;
         //Screen.orientation = ScreenOrientation.AutoRotation;
         if (gameControl.logado) //Verifia se existe admin logado
         {
