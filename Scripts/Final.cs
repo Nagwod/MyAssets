@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections; //Para utilizar corrotinas
+using UnityEngine; //Padrão
 
 public class Final : MonoBehaviour
 {
@@ -10,8 +9,9 @@ public class Final : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Player")
+        if (collision.transform.tag == "Player") //Quando o jogador colidir com o final
         {
+            ConfigGeral.completa = true;
             StartCoroutine(Delay()); //Começa a corrotina quando o jogador colidir com o final da fase
         }
     }
@@ -66,8 +66,6 @@ public class Final : MonoBehaviour
         source.Play(0); //Toca o som de parabéns
         TelaFinal.SetActive(true); //Aparece a tela final
         TelaPrincipal.SetActive(false); //Sai a tela principal
-        //gameControl.SetFasesCompletas(fase);
-        //gameControl.Save();
         Time.timeScale = 0; //Pausa o jogo
         CalculaResultados(); //Manda os resultados para serem salvos
         yield return new WaitForSeconds(0.2f);

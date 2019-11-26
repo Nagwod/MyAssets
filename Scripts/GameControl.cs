@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using Proyecto26;
+﻿using System.Collections; //Para utilizar corrotinas
+using System.Collections.Generic; //Para utilizar listas
+using UnityEngine; //Padrão
+using System; //Para deinir os modelos
+using System.Runtime.Serialization.Formatters.Binary; //Para criar os arquivos vinários
+using System.IO; //Para criar os arquivos vinários
+using Proyecto26; //RestClient
 
 [Serializable]
 class Admin //Modelo para Salvar o admin
@@ -39,8 +39,8 @@ public class GameControl : MonoBehaviour
     //Save cloudSave = new Save(); // variável de controle para o save
     public static GameControl gameControl;
     [SerializeField] private string filePath, fileAdm; //Caminhos dos arquivos
-    public string nomeDB;
-    public bool logado;
+    public string nomeDB; //Nome que volta do banco para os botões
+    public bool logado, carregandoNuvem; //carregandoNuvem obriga o programa a esperar os dados serem transferidos
     private string nomeAdmin, senhaAdmin, emailAdmin;
     private List<string> saves = new List<string>(); //Lista para controlar os saves
     private string nomeJogador, idadeJogador;
@@ -71,44 +71,41 @@ public class GameControl : MonoBehaviour
     {
         foreach (string i in saves)
         {
-            if (!(i == nomeAdmin + "/" + nomeJogador))
+            if ((i == nomeAdmin + "/" + nomeJogador)) //Se houver um jogador com o nome retorna false
             {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true; //Se não houver nenhum, retorna true
     }
 
     public void CriarSave() //Cria o arquivo de save do jogador
     {
-        if (!File.Exists(filePath + nomeAdmin + nomeJogador + ".dat"))
+        Limpar();
+        Save pSave = new Save
         {
-            Limpar();
-            BinaryFormatter bf = new BinaryFormatter(); //Variável para converter um arquivo para binário
-            Save pSave = new Save
-            {
-                nome = nomeJogador,
-                idade = idadeJogador,
-                faseCompleta = faseCompleta,
-                moedas = moedas,
-                tempos = tempo,
-                velocMedias = velocMedia,
-                mortes = mortes,
-                mortesBuraco = mortesBuraco,
-                mortesEspinho = mortesEspinho,
-                mortesParedes = mortesParede,
-                mortesQueda = mortesQueda,
-                batidasParede = batidasParede,
-                batidasArvore = batidasArvore
-            };
-            RestClient.Put("https://db-tbp.firebaseio.com/" + nomeAdmin + "/" + pSave.nome + ".json", pSave); //Teste normal
-            CarregarAdmin(); //Carrega o admin para adicionar o novo jogador
-            saves.Add(nomeAdmin +"/"+ nomeJogador); //Adciona o novo jogador na lista
-            AlterarSaves(); //Salva o novo jogador em admin
-        }
+            nome = nomeJogador,
+            idade = idadeJogador,
+            faseCompleta = faseCompleta,
+            moedas = moedas,
+            tempos = tempo,
+            velocMedias = velocMedia,
+            mortes = mortes,
+            mortesBuraco = mortesBuraco,
+            mortesEspinho = mortesEspinho,
+            mortesParedes = mortesParede,
+            mortesQueda = mortesQueda,
+            batidasParede = batidasParede,
+            batidasArvore = batidasArvore
+        };
+        RestClient.Put("https://db-tbp.firebaseio.com/" + nomeAdmin + "/" + pSave.nome + ".json", pSave); //Teste normal
+        CarregarAdmin(); //Carrega o admin para adicionar o novo jogador
+        saves.Add(nomeAdmin +"/"+ pSave.nome); //Adciona o novo jogador na lista
+        AlterarSaves(); //Salva o novo jogador em admin
+        print(saves);
     }
 
-    public void SendSaveToDatabase()
+    public void SendSaveToDatabase() //Manda os dados para a nuvem
     {
         Save pSave = new Save
         {
@@ -130,12 +127,12 @@ public class GameControl : MonoBehaviour
         RestClient.Put("https://db-tbp.firebaseio.com/" + nomeAdmin + "/" + pSave.nome + ".json", pSave); //Teste normal
     }
 
-    public void RetreiveSaveData(string savepath)
+    public void RetreiveSaveData(string savepath) //Recebe os dados da nuvem
     {
         Save save = new Save();
         RestClient.Get<Save>("https://db-tbp.firebaseio.com/" + savepath + ".json").Then(response => {
             save = response;
-            nomeJogador = save.nome; //Passa os dados carregados
+            nomeJogador = save.nome;
             idadeJogador = save.idade;
             faseCompleta = save.faseCompleta;
             moedas = save.moedas;
@@ -148,15 +145,17 @@ public class GameControl : MonoBehaviour
             mortesQueda = save.mortesQueda;
             batidasParede = save.batidasParede;
             batidasArvore = save.batidasArvore;
+            carregandoNuvem = false;
         });
     }
     
-    public void GetNomeDB(string savepath)
+    public void GetNomeDB(string savepath) //Recupera os nomes da nuvem para carregar os botoes
     {
         Save save = new Save();
         RestClient.Get<Save>("https://db-tbp.firebaseio.com/" + savepath + ".json").Then(response => {
             save = response;
             nomeDB = save.nome;
+            carregandoNuvem = false;
         });
     }
 
@@ -188,9 +187,9 @@ public class GameControl : MonoBehaviour
     }
 
     //Admin
-    public bool VerificaAdmin() //Verifica se já existe o admin
+    public bool VerificaAdmin(string nomeadm) //Verifica se já existe o admin
     {
-        if (File.Exists(fileAdm + nomeAdmin + ".dat"))
+        if (File.Exists(fileAdm + nomeadm + ".dat"))
         {
             return true; //Se extiver tudo certo, retorna true
         }
@@ -300,7 +299,7 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    public bool Recuperar(string nome, string email)
+    public bool Recuperar(string nome, string email) // verifica se o email está correto para enviar a recuperação de senha
     {
         SetNomeAdmin(nome);
         CarregarAdmin();
@@ -316,10 +315,9 @@ public class GameControl : MonoBehaviour
 
     public void MediaSaves()
     {
-        StartCoroutine(MediaDelay());
+        StartCoroutine(MediaDelay()); //Corrotina é chamada para esperar pelos dados da nuvem
     }
-
-    public IEnumerator MediaDelay()
+    IEnumerator MediaDelay()
     {
         float[] somaMoedas = new float[4];
         float[] somaTempos = new float[4];
@@ -334,7 +332,7 @@ public class GameControl : MonoBehaviour
 
         List<string> s = GetSaves();
         int[] cont = new int[4];
-        bool aux = false;
+        bool aux = false; //Verifica se os dados voltaram da nuvem
         foreach (string i in s)
         {
             Save save = new Save();
@@ -343,7 +341,7 @@ public class GameControl : MonoBehaviour
                 save = response;
                 for (int j = 0; j <= 3; j++)
                 {
-                    if (save.faseCompleta[j] > 0)
+                    if (save.faseCompleta[j] > 1) //Se a fase for completa, executa a soma
                     {
                         somaMoedas[j] += save.moedas[j];
                         somaTempos[j] += save.tempos[j];
@@ -360,7 +358,7 @@ public class GameControl : MonoBehaviour
                 }
                 aux = true;
             });
-            while (!aux)
+            while (!aux) //Espera os dados chegarem da nuvem
             {
                 yield return new WaitForSeconds(0.1f);
             }
@@ -368,7 +366,7 @@ public class GameControl : MonoBehaviour
         }
         for (int i = 0; i <= 3; i++)
         {
-            if (cont[i] > 0)
+            if (cont[i] > 0) //Se houver agum dado para fazer as médias, as médias são feitas
             {
                 mediaMoedas[i] = somaMoedas[i] / cont[i];
                 mediaTempos[i] = somaTempos[i] / cont[i];
@@ -499,22 +497,8 @@ public class GameControl : MonoBehaviour
         emailAdmin = email;
     }
 
-    private void GetTeste()
+    private void GetTeste() //Força existir o perfil do teste (para trazer os dados de volta para a apresentação)
     {
-        if (!File.Exists(fileAdm + nomeAdmin + ".dat"))
-        {
-            BinaryFormatter bf = new BinaryFormatter(); //Variável para converter um arquivo para binário
-            FileStream file = File.Create(fileAdm + nomeAdmin + ".dat"); //Cria um novo arquivo
-            Admin adm = new Admin //Instancia um novo "Admin"
-            {
-                nome = nomeAdmin,
-                senha = senhaAdmin,
-                email = emailAdmin,
-                saves = saves
-            };
-            bf.Serialize(file, adm); //Guarda os valores de "adm" no arquivo
-            file.Close(); //Fecha o arquivo
-        }
         if (!File.Exists(fileAdm + "RaulPila" + ".dat")){
             List<string> s = new List<string>();
             s.Add("RaulPila/Alex");
@@ -547,7 +531,7 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Awake() //Executa quando inicializar
     {
         filePath = Application.persistentDataPath + "/Save"; //Caminho do save do jogador
         fileAdm = Application.persistentDataPath + "/Admin"; //Caminho do save do Admin
@@ -561,7 +545,10 @@ public class GameControl : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         DontDestroyOnLoad(gameObject); //Não destruir quando carregar outra cena
+
         GetTeste();
+        carregandoNuvem = true;
     }
 }

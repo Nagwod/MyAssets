@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections; //Para utilizar corrotinas
+using UnityEngine; //Padrão
+using UnityEngine.UI; //Para interface
 
 public class ConfigGeral : MonoBehaviour
 {
@@ -13,13 +12,14 @@ public class ConfigGeral : MonoBehaviour
     static public float tempo, gravMedia, gravsoma; //Dados a serem coletados durantre o jogo
     static public int faseAtual; //Fase que está sendo jogada
     static public int mortes, mortesBuraco, mortesEspinho, mortesParedes, mortesQueda, batidasParedes, batidasArvores; //Dados a serem coletados durantre o jogo
-    //, pontos;
+    static public bool completa;
 
     // Start is called before the first frame update
     void Start()
     {
         gameControl = GameControl.gameControl; //Seta o gameControl
         //Screen.orientation = ScreenOrientation.LandscapeLeft;
+        completa = false; //Evita autosave quando a fase for completa
         tempo = 0;
         gravMedia = 0;
         moedas = 0; //É alterada pelo script de Moeda
@@ -43,28 +43,32 @@ public class ConfigGeral : MonoBehaviour
     IEnumerator AutoSave()
     {
         yield return new WaitForSeconds(5);
-        if (gameControl.GetFaseCompleta(faseAtual - 1) < 1) //Verifica se a fase não foi jogada ainda
+        if (!completa) //Evita autosave quando a fase for completa
         {
-            gameControl.SetFaseCompleta(faseAtual - 1, 1);
+            if (gameControl.GetFaseCompleta(faseAtual - 1) < 1) //Verifica se a fase não foi jogada ainda
+            {
+                gameControl.SetFaseCompleta(faseAtual - 1, 1);
+            }
+            if (gameControl.GetTempos(faseAtual - 1) <= System.Math.Floor(tempo))
+            {
+                gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
+                    faseAtual - 1,
+                    moedas,
+                    (int)System.Math.Floor(tempo),
+                    gravMedia,
+                    mortes,
+                    mortesBuraco,
+                    mortesEspinho,
+                    mortesParedes,
+                    mortesQueda,
+                    batidasParedes,
+                    batidasArvores
+                );
+                gameControl.SendSaveToDatabase();
+            }
+            StartCoroutine(AutoSave());
         }
-        if (gameControl.GetTempos(faseAtual - 1) <= System.Math.Floor(tempo))
-        {
-            gameControl.SetResultados( //Passa os resultados de ConfigGeral para o gameControl
-                faseAtual - 1,
-                moedas,
-                (int)System.Math.Floor(tempo),
-                gravMedia,
-                mortes,
-                mortesBuraco,
-                mortesEspinho,
-                mortesParedes,
-                mortesQueda,
-                batidasParedes,
-                batidasArvores
-            );
-            gameControl.SendSaveToDatabase();
-        }
-        StartCoroutine(AutoSave());
+        
     }
 
     // Update is called once per frame

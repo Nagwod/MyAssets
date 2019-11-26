@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections; //Para utilizar corrotinas
+using System.Collections.Generic; //Para utilizar listas
+using UnityEngine; //Padrão
+using UnityEngine.UI; //Para interface
 
 public class MenuControl : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class MenuControl : MonoBehaviour
     [SerializeField] private Button[] botoes2; //Botões para acessar os resultados das fases
     [SerializeField] private InputField nomeJogador, idadeJogador, nomeAdmCriar, emailAdmCriar, senhaAdmCriar, nomeAdmLogin, senhaAdmLogin, emailAdmAlterar, senhaAdmAlterar; //Campos de texto do login do admin e do cirar admin
     [SerializeField] private GameObject criarAdm, menu, loginAdm, alterarAdmin, criarJogador, loginJogador, selecaoFases, dadosJogador, avisoExclusao;
-    [SerializeField] private GameObject erroCriarAdm, erroCriarAdm2, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm, carregando; //Vários objetos das telas do menu
+    [SerializeField] private GameObject erroCriarAdm, erroCriarAdm2, erroLoginAdm, erroCriarJogador, erroCriarJogador2, erroCriarJogador3, naoAlteradoAdm, alteradoAdm, carregandoJogadores, carregandoJogador, carregandoDados; //Vários objetos das telas do menu
     [SerializeField] private GameObject prefabBotao; //Botão prefab para os jogadores que forem criados
     [SerializeField] private Transform content;//O campo de rolagem que tem os botões dos jogadores criados
     [SerializeField] private Text nomeAdminAlterar, emailAdminAlterar, nomeAdminPainel, nomeIdadeDados, faseDados, moedasDados, tempoDados, velocMedDados, mortesDados, mortesBuracoDados, mortesEspinhoDados, mortesParedeDados, mortesQuedaDados, batidasParedeDados, batidasArvoreDados; //Campos da tela de resultados
@@ -46,35 +46,73 @@ public class MenuControl : MonoBehaviour
     public void AcessarDadosJogador() //Método para acessar a tela de dados do jogador
     {
         gameControl.RetreiveSaveData(gameControl.GetNomeAdmin() + "/" + gameControl.GetNomeJogador()); //Carrega o jogador
-        dadosJogador.SetActive(true); //Troca de tela
         menu.SetActive(false); //Troca de tela
+        carregandoDados.SetActive(true);
+        StartCoroutine(DatabaseDelay3()); //Corrotina é chamada para esperar pelos dados da nuvem
+    }
+    IEnumerator DatabaseDelay3()
+    {
+        while (gameControl.carregandoNuvem) //Espera os dados chegarem da nuvem
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        gameControl.carregandoNuvem = true;
         foreach (Button b in botoes2)
         {
+            var colors = b.colors;
+            colors.normalColor = new Vector4(0.2f, 0.7f, 1, 1);
+            colors.highlightedColor = new Vector4(0, 0.5f, 1, 1);
+            colors.pressedColor = new Vector4(0, 0.5f, 1, 1);
+            b.colors = colors;
             b.interactable = false; //Desativa os botões de fase
         }
         for (int i = 0; i <= 3; i++)
         {
-            if (gameControl.GetFaseCompleta(i) > 0)
+            if (gameControl.GetFaseCompleta(i) == 1)
             {
                 botoes2[i].interactable = true; //Ativa os botões das fases jogadas
+            }
+            if (gameControl.GetFaseCompleta(i) == 2)
+            {
+                botoes2[i].interactable = true; //Ativa os botões das fases jogadas
+                var colors = botoes2[i].colors;
+                colors.normalColor = new Vector4(0, 0.8f, 0.2f, 1);
+                colors.highlightedColor = new Vector4(0, 0.7f, 0.2f, 1);
+                colors.pressedColor = new Vector4(0, 0.7f, 0.2f, 1);
+                botoes2[i].colors = colors;
             }
         }
         fase = 1; //Para entrar sem nenhuma fase selecionada
         ExibirDados(); //Para exibir os dados na tela
+        carregandoDados.SetActive(false);
+        dadosJogador.SetActive(true); //Troca de tela
     }
 
     public void TelaFases()
     {
         foreach (Button b in botoes)
         {
+            var colors = b.colors;
+            colors.normalColor = new Vector4(0.2f, 0.7f, 1, 1);
+            colors.highlightedColor = new Vector4(0, 0.5f, 1, 1);
+            colors.pressedColor = new Vector4(0, 0.5f, 1, 1);
+            b.colors = colors;
             b.interactable = false; //Desativa os botões das fases
         }
         botoes[0].interactable = true;
-        for (int i = 1; i <= 3; i++)
+        for (int i = 0; i <= 3; i++)
         {
-            if (gameControl.GetFaseCompleta(i - 1) > 1)
+            if (gameControl.GetFaseCompleta(i) > 1)
             {
-                botoes[i].interactable = true; //Ativa os botões das fases liberadas
+                if (i<3)
+                {
+                    botoes[i + 1].interactable = true; //Ativa os botões das fases liberadas
+                }
+                var colors = botoes[i].colors;
+                colors.normalColor = new Vector4(0, 0.8f, 0.2f, 1);
+                colors.highlightedColor = new Vector4(0, 0.7f, 0.2f, 1);
+                colors.pressedColor = new Vector4(0, 0.7f, 0.2f, 1);
+                botoes[i].colors = colors;
             }
         }
     }
@@ -83,18 +121,18 @@ public class MenuControl : MonoBehaviour
     {
         gameControl.SetNomeJogador("");  //Seta o nome do jogador para acessar seus dados
         gameControl.RetreiveSaveData(gameControl.GetNomeAdmin() + "/" + nomeJogador); //Carrega o jogador
-        StartCoroutine(DatabaseDelay2(nomeJogador));
+        StartCoroutine(DatabaseDelay2(nomeJogador)); //Corrotina é chamada para esperar pelos dados da nuvem
     }
-
     IEnumerator DatabaseDelay2(string nome)
     {
         loginJogador.SetActive(false);
-        while (nome!= gameControl.GetNomeJogador())
+        carregandoJogador.SetActive(true); //Aparece a tela de carregamento
+        while (gameControl.carregandoNuvem) //Espera os dados chegarem da nuvem
         {
-            carregando.SetActive(true); //Aparece a tela de carregamento
             yield return new WaitForSeconds(0.1f);
         }
-        carregando.SetActive(false);
+        gameControl.carregandoNuvem = true;
+        carregandoJogador.SetActive(false);
         menu.SetActive(true); //Troca de tela
     }
 
@@ -107,7 +145,7 @@ public class MenuControl : MonoBehaviour
         }
         else
         {
-            if (!gameControl.VerificaAdmin())
+            if (!gameControl.VerificaAdmin(nomeAdmCriar.text))
             {
                 gameControl.SetNomeAdmin(nomeAdmCriar.text); //Seta o nome do admin para criá-lo
                 gameControl.SetEmailAdmin(emailAdmCriar.text); //Seta o nome do admin para criá-lo
@@ -134,10 +172,9 @@ public class MenuControl : MonoBehaviour
         {
             gameControl.CarregarAdmin();
             gameControl.MediaSaves();
+            loginAdm.SetActive(false);
+            carregandoJogadores.SetActive(true);
             CarregaBotoes();
-            loginAdm.SetActive(false); //Troca de tela
-            loginJogador.SetActive(true); //Troca de tela
-            nomeAdminPainel.text = gameControl.GetNomeAdmin();
             ApagaErros(); //Apaga as mensagens de erros das telas
             ApagaTextos(); //Apaga os campos de texto
             gameControl.logado = true;
@@ -149,20 +186,20 @@ public class MenuControl : MonoBehaviour
         }
     }
 
-    public void AlterarAdm()
+    public void AlterarAdm() //Alterar dados do admin
     {
-        if (emailAdmAlterar.text.Equals("") && senhaAdmAlterar.text.Equals(""))
+        if (emailAdmAlterar.text.Equals("") && senhaAdmAlterar.text.Equals("")) //Se os campos forem vazios, não altera nada
         {
             ApagaErros();
             naoAlteradoAdm.SetActive(true);
         }
         else
         {
-            if (emailAdmAlterar.text != "")
+            if (emailAdmAlterar.text != "") //Se o email não for vazio, altera o email
             {
                 gameControl.SetEmailAdmin(emailAdmAlterar.text);
             }
-            if (senhaAdmAlterar.text != "")
+            if (senhaAdmAlterar.text != "") //Se a senha não for vazio, altera a senha
             {
                 gameControl.SetSenhaAdmin(senhaAdmAlterar.text);
             }
@@ -197,8 +234,7 @@ public class MenuControl : MonoBehaviour
             {
                 if (gameControl.ChecaSave()) //Verifica se já existe um jogador com o mesmo nome
                 {
-                    gameControl.SendSaveToDatabase();
-                    gameControl.CriarSave(); //Cria o jogador
+                    gameControl.CriarSave();
                     CriaBotao(); //Cria um botão para acessar o jogador
                     criarJogador.SetActive(false);
                     loginJogador.SetActive(true);
@@ -244,16 +280,16 @@ public class MenuControl : MonoBehaviour
 
     public void CarregaBotoes() //Carrega os botões dos jogadores
     {
+        nomeAdminPainel.text = gameControl.GetNomeAdmin();
         if (!botoesCarregados)
         {
             for (int i = 0; i <= botoesSaves.Capacity; i++)
             {
                 ExcluiBotao();
             }
-            StartCoroutine(DatabaseDelay());
+            StartCoroutine(DatabaseDelay()); //Corrotina é chamada para esperar pelos dados da nuvem
         }
     }
-
     IEnumerator DatabaseDelay()
     {
         string nomeant;
@@ -261,10 +297,11 @@ public class MenuControl : MonoBehaviour
         {
             nomeant = gameControl.nomeDB;
             gameControl.GetNomeDB(save);
-            while (gameControl.nomeDB == nomeant)
+            while (gameControl.carregandoNuvem) //Espera os dados chegarem da nuvem
             {
                 yield return new WaitForSeconds(0.1f);
             }
+            gameControl.carregandoNuvem = true;
             GameObject go = Instantiate(prefabBotao) as GameObject; //Instancia o botão prefab para cada jogador (na tela de jogador)
             go.transform.SetParent(content); //Coloca o botão no campo de rolagem (na tela de admin)
             go.GetComponentInChildren<Text>().text = gameControl.nomeDB; //Coloca o nome do jogador no texto do botão
@@ -277,6 +314,8 @@ public class MenuControl : MonoBehaviour
                 Destroy(b.gameObject); //Destrói o botão
             }
         }
+        carregandoJogadores.SetActive(false);
+        loginJogador.SetActive(true);
     }
 
     public void CriaBotao() //Cria o botão correspondente ao novo jogador criado
@@ -306,15 +345,24 @@ public class MenuControl : MonoBehaviour
         ExibirDados(); //Troca os dados
     }
 
-    public void SetNomeAdmAlterar()
+    public void SetNomeAdmAlterar() //Coloca os textos do nome e email na tela de alterar
     {
         nomeAdminAlterar.text = "Nome: " + gameControl.GetNomeAdmin();
         emailAdminAlterar.text = "E-mail: " + gameControl.GetEmailAdmin();
     }
 
-    public void BotoesCarregadosTrue()
+    public void BotoesCarregadosTrue() //Evita ter que carregar os botões se já estiverem carregados
     {
         botoesCarregados = true;
+    }
+
+    public void MenuToSaves() //Se os botoes estiverem carregados, volta sem carregar
+    {
+        if (botoesCarregados)
+        {
+            carregandoJogadores.SetActive(false);
+            loginJogador.SetActive(true);
+        }
     }
 
     /*
